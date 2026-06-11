@@ -74,7 +74,7 @@ export default function ProductDetails() {
       {
         title: 'Truly Transformative',
         rating: 5,
-        content: 'I used this serum twice daily for a week. Within the first week, my skin felt completely transformed. The product is lightweight and absorbs almost instantly. My skin looks more plump, dewy and much more hydrated. It's become the highlight of my morning ritual. Highly recommend for anyone with sensitive skin looking for radiance.',
+        content: "I used this serum twice daily for a week. Within the first week, my skin felt completely transformed. The product is lightweight and absorbs almost instantly. My skin looks more plump, dewy and much more hydrated. It's become the highlight of my morning ritual. Highly recommend for anyone with sensitive skin looking for radiance.",
         author: 'Amanda N.',
         date: '2 days ago',
         verified: true,
