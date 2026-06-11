@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Menu, X, Search, Heart, ShoppingBag, User } from 'lucide-react'
+import { useAuth } from '../context/AuthContext'
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { user, logout } = useAuth()
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
 
@@ -42,9 +44,19 @@ export default function Navbar() {
             <button className="p-2 hover:bg-brown/5 rounded-lg transition-colors" aria-label="Search">
               <Search size={20} className="text-charcoal" />
             </button>
-            <Link to="/account" className="p-2 hover:bg-brown/5 rounded-lg transition-colors" aria-label="Account">
-              <User size={20} className="text-charcoal" />
-            </Link>
+            {user ? (
+              <div className="flex items-center gap-3">
+                <Link to="/account" className="p-2 hover:bg-brown/5 rounded-lg transition-colors" aria-label="Account">
+                  <User size={20} className="text-charcoal" />
+                </Link>
+                <button onClick={logout} className="text-sm text-charcoal hover:text-brown">Log out</button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-3">
+                <Link to="/login" className="text-sm text-charcoal hover:text-brown">Sign in</Link>
+                <Link to="/signup" className="text-sm text-brown font-medium">Create account</Link>
+              </div>
+            )}
             <button className="p-2 hover:bg-brown/5 rounded-lg transition-colors" aria-label="Wishlist">
               <Heart size={20} className="text-charcoal" />
             </button>
@@ -77,6 +89,19 @@ export default function Navbar() {
                 {item.label}
               </Link>
             ))}
+            <div className="px-4 py-2 border-t mt-2">
+              {user ? (
+                <div className="space-y-2">
+                  <Link to="/account" className="block text-charcoal">Account</Link>
+                  <button onClick={logout} className="block text-left text-charcoal">Log out</button>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <Link to="/login" className="block text-charcoal">Sign in</Link>
+                  <Link to="/signup" className="block text-brown font-medium">Create account</Link>
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>

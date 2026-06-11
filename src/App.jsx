@@ -7,24 +7,31 @@ import ProductDetails from './pages/ProductDetails'
 import Cart from './pages/Cart'
 import Account from './pages/Account'
 import NotFound from './pages/NotFound'
+import Login from './pages/Auth/Login'
+import SignUp from './pages/Auth/SignUp'
+import { AuthProvider } from './context/AuthContext'
 
 export default function App() {
   return (
-    <Router>
-      <div className="flex flex-col min-h-screen bg-cream">
-        <Navbar />
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/shop/skincare" element={<ProductCatalog />} />
-            <Route path="/product/:id" element={<ProductDetails />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/account" element={<Account />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <div className="flex flex-col min-h-screen bg-cream">
+          <Navbar />
+          <main className="flex-grow">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/shop/skincare" element={<ProductCatalog />} />
+              <Route path="/product/:id" element={<ProductDetails />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/account" element={<Account />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </Router>
+    </AuthProvider>
   )
 }
