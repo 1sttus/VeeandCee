@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Heart, Instagram, Pinterest, TikTok } from 'lucide-react'
+import { Camera, Bookmark, Music2 } from 'lucide-react'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -87,13 +87,13 @@ export default function Footer() {
             {/* Social Icons */}
             <div className="flex items-center gap-4">
               <a href="#" className="p-2 hover:bg-brown/5 rounded-full transition-colors" aria-label="Instagram">
-                <Instagram size={18} className="text-charcoal" />
+                <Camera size={18} className="text-charcoal" />
               </a>
               <a href="#" className="p-2 hover:bg-brown/5 rounded-full transition-colors" aria-label="Pinterest">
-                <Pinterest size={18} className="text-charcoal" />
+                <Bookmark size={18} className="text-charcoal" />
               </a>
               <a href="#" className="p-2 hover:bg-brown/5 rounded-full transition-colors" aria-label="TikTok">
-                <TikTok size={18} className="text-charcoal" />
+                <Music2 size={18} className="text-charcoal" />
               </a>
             </div>
           </div>
