@@ -70,7 +70,7 @@ export default function ProductDetails() {
         author: 'Sarah J.',
       },
     ],
-    reviews: [
+    customerReviews: [
       {
         title: 'Truly Transformative',
         rating: 5,
