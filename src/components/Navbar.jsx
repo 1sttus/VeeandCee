@@ -73,6 +73,11 @@ export default function Navbar() {
             >
               <Heart size={20} className="text-charcoal" />
             </button>
+            {import.meta.env.DEV && (
+              <Link to="/admin" className="p-2 text-[10px] font-bold text-rose border border-rose/20 rounded-lg hover:bg-rose/5 transition-colors">
+                DEV: ADMIN
+              </Link>
+            )}
             {user ? (
               <div className="relative">
                 <button

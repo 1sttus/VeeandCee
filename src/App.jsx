@@ -1,4 +1,4 @@
-import { Suspense, lazy } from 'react'
+import { Suspense, lazy, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
@@ -9,6 +9,7 @@ import { AuthProvider } from './context/AuthContext'
 import { CartProvider } from './context/CartContext'
 import { WishlistProvider } from './context/WishlistContext'
 import { OrderProvider } from './context/OrderContext'
+import AdminRoute from './components/admin/AdminRoute'
 
 const Home = lazy(() => import('./pages/Home'))
 const ProductCatalog = lazy(() => import('./pages/ProductCatalog'))
@@ -27,13 +28,19 @@ const Subscription = lazy(() => import('./pages/Subscription'))
 const Returns = lazy(() => import('./pages/Returns'))
 const ContactUs = lazy(() => import('./pages/ContactUs'))
 const Shipping = lazy(() => import('./pages/Shipping'))
-const AdminDashboard = lazy(() => import('./pages/AdminDashboard'))
+const AdminLayout = lazy(() => import('./admin/AdminLayout'))
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard')) // Refactored as Overview
 const Account = lazy(() => import('./pages/Account'))
 const Login = lazy(() => import('./pages/Auth/Login'))
 const SignUp = lazy(() => import('./pages/Auth/SignUp'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
 export default function App() {
+  useEffect(() => {
+    console.log('--- Vee & Cee Routing System Initialized ---');
+    console.log('Routes Registered: /, /shop, /cart, /admin, /compare');
+  }, []);
+
   return (
     <AuthProvider>
       <WishlistProvider>
@@ -66,7 +73,16 @@ export default function App() {
                         <Route path="/product/:id" element={<ProductDetails />} />
                         <Route path="/cart" element={<Cart />} />
                         <Route path="/account" element={<Account />} />
-                        <Route path="/admin" element={<AdminDashboard />} />
+                        
+                        {/* Protected Admin Routes */}
+                        <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
+                          <Route index element={<AdminDashboard />} />
+                          <Route path="products" element={<AdminDashboard />} />
+                          <Route path="orders" element={<AdminDashboard />} />
+                          <Route path="inventory" element={<AdminDashboard />} />
+                          <Route path="customers" element={<AdminDashboard />} />
+                        </Route>
+
                         <Route path="/login" element={<Login />} />
                         <Route path="/signup" element={<SignUp />} />
                         <Route path="*" element={<NotFound />} />
