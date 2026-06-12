@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
 import { useOrders } from '../context/OrderContext'
-import MobileNav from '../components/MobileNav'
 
 export default function OrderHistory() {
   const { orders } = useOrders()
@@ -58,7 +57,6 @@ export default function OrderHistory() {
           </div>
         )}
       </div>
-      <MobileNav />
     </div>
   )
 }

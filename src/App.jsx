@@ -1,5 +1,5 @@
 import { Suspense, lazy, useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import ErrorBoundary from './components/ErrorBoundary'
@@ -37,6 +37,60 @@ const Login = lazy(() => import('./pages/Auth/Login'))
 const SignUp = lazy(() => import('./pages/Auth/SignUp'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
+function AppContent() {
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith('/admin');
+
+  return (
+    <div className="flex flex-col min-h-screen bg-cream overflow-x-hidden">
+      {!isAdminRoute && <Navbar />}
+      {!isAdminRoute && <FloatingAssistant />}
+      <main className={isAdminRoute ? "" : "flex-grow"}>
+        <Suspense fallback={<SkeletonLoader />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/shop" element={<ProductCatalog />} />
+            <Route path="/shop/:category" element={<ProductCatalog />} />
+            <Route path="/search" element={<SearchResults />} />
+            <Route path="/wishlist" element={<Wishlist />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/order-history" element={<OrderHistory />} />
+            <Route path="/order-success" element={<OrderSuccess />} />
+            <Route path="/compare" element={<Compare />} />
+            <Route path="/chat" element={<Chat />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/gift-sets" element={<GiftSets />} />
+            <Route path="/subscription" element={<Subscription />} />
+            <Route path="/returns" element={<Returns />} />
+            <Route path="/contact" element={<ContactUs />} />
+            <Route path="/shipping" element={<Shipping />} />
+            <Route path="/product/:id" element={<ProductDetails />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/account" element={<Account />} />
+            
+            {/* Protected Admin Routes */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="products" element={<AdminDashboard />} />
+              <Route path="orders" element={<AdminDashboard />} />
+              <Route path="inventory" element={<AdminDashboard />} />
+              <Route path="customers" element={<AdminDashboard />} />
+              <Route path="analytics" element={<AdminDashboard />} />
+            </Route>
+
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
+      </main>
+      {!isAdminRoute && <Footer />}
+      {!isAdminRoute && <MobileNav />}
+    </div>
+  );
+}
+
 export default function App() {
   useEffect(() => {
     console.log('--- Vee & Cee Routing System Initialized ---');
@@ -50,52 +104,7 @@ export default function App() {
           <OrderProvider>
             <Router>
               <ErrorBoundary>
-                <div className="flex flex-col min-h-screen bg-cream overflow-x-hidden">
-                  <Navbar />
-                  <FloatingAssistant />
-                  <main className="flex-grow">
-                    <Suspense fallback={<SkeletonLoader />}>
-                      <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/shop" element={<ProductCatalog />} />
-                        <Route path="/shop/:category" element={<ProductCatalog />} />
-                        <Route path="/search" element={<SearchResults />} />
-                        <Route path="/wishlist" element={<Wishlist />} />
-                        <Route path="/checkout" element={<Checkout />} />
-                        <Route path="/order-history" element={<OrderHistory />} />
-                        <Route path="/order-success" element={<OrderSuccess />} />
-                        <Route path="/compare" element={<Compare />} />
-                        <Route path="/chat" element={<Chat />} />
-                        <Route path="/faq" element={<FAQ />} />
-                        <Route path="/gift-sets" element={<GiftSets />} />
-                        <Route path="/subscription" element={<Subscription />} />
-                        <Route path="/returns" element={<Returns />} />
-                        <Route path="/contact" element={<ContactUs />} />
-                        <Route path="/shipping" element={<Shipping />} />
-                        <Route path="/product/:id" element={<ProductDetails />} />
-                        <Route path="/cart" element={<Cart />} />
-                        <Route path="/account" element={<Account />} />
-                        
-                        {/* Protected Admin Routes */}
-                        <Route path="/admin/login" element={<AdminLogin />} />
-                        <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
-                          <Route index element={<AdminDashboard />} />
-                          <Route path="products" element={<AdminDashboard />} />
-                          <Route path="orders" element={<AdminDashboard />} />
-                          <Route path="inventory" element={<AdminDashboard />} />
-                          <Route path="customers" element={<AdminDashboard />} />
-                          <Route path="analytics" element={<AdminDashboard />} />
-                        </Route>
-
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/signup" element={<SignUp />} />
-                        <Route path="*" element={<NotFound />} />
-                      </Routes>
-                    </Suspense>
-                  </main>
-                  <Footer />
-                  <MobileNav />
-                </div>
+                <AppContent />
               </ErrorBoundary>
             </Router>
           </OrderProvider>

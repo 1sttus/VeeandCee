@@ -1,6 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useOrders } from '../context/OrderContext'
-import MobileNav from '../components/MobileNav'
 
 export default function OrderSuccess() {
   const { state } = useLocation()
@@ -33,7 +32,6 @@ export default function OrderSuccess() {
           </div>
         </div>
       </div>
-      <MobileNav />
     </div>
   )
 }

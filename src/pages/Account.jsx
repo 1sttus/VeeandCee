@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { LogOut, MapPin, Heart, Award, ShoppingBag } from 'lucide-react'
-import MobileNav from '../components/MobileNav'
 
 export default function Account() {
   const [activeTab, setActiveTab] = useState('overview')
@@ -255,8 +254,6 @@ export default function Account() {
           </div>
         )}
       </div>
-
-      <MobileNav />
     </div>
   )
 }

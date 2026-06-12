@@ -3,7 +3,6 @@ import { Trash2, Plus, Minus, ArrowRight } from 'lucide-react'
 import { useCart } from '../context/CartContext'
 import { useWishlist } from '../context/WishlistContext'
 import ProductCard from '../components/ProductCard'
-import MobileNav from '../components/MobileNav'
 
 export default function Cart() {
   const { cartItems, removeFromCart, increaseQuantity, decreaseQuantity, calculateTotals } = useCart()
@@ -29,7 +28,6 @@ export default function Cart() {
             </button>
           </div>
         </div>
-        <MobileNav />
       </div>
     )
   }
@@ -158,8 +156,6 @@ export default function Cart() {
           </section>
         )}
       </div>
-
-      <MobileNav />
     </div>
   )
 }

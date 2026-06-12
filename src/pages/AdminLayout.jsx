@@ -1,6 +1,5 @@
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, Package, ShoppingCart, Users, BarChart3, Boxes, ArrowLeft, LogOut } from 'lucide-react';
-import MobileNav from '../components/MobileNav';
 
 const sidebarItems = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/admin' },

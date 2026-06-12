@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useOrders } from '../context/OrderContext'
-import MobileNav from '../components/MobileNav'
 
 export default function Checkout() {
   const { cartItems, calculateTotals, clearCart } = useCart()
@@ -46,7 +45,6 @@ export default function Checkout() {
             Continue Shopping
           </Link>
         </div>
-        <MobileNav />
       </div>
     )
   }
@@ -138,7 +136,6 @@ export default function Checkout() {
           </aside>
         </div>
       </div>
-      <MobileNav />
     </div>
   )
 }

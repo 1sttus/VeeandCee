@@ -4,7 +4,6 @@ import { ShoppingCart, Heart, Share2, ChevronDown } from 'lucide-react'
 import { useCart } from '../context/CartContext'
 import { useWishlist } from '../context/WishlistContext'
 import ProductCard from '../components/ProductCard'
-import MobileNav from '../components/MobileNav'
 import products from '../data/products'
 
 export default function ProductDetails() {
@@ -208,8 +207,6 @@ export default function ProductDetails() {
           </section>
         )}
       </div>
-
-      <MobileNav />
     </div>
   )
 }
