@@ -7,119 +7,112 @@ import MobileNav from '../components/MobileNav'
 export default function ProductCatalog() {
   const [sortBy, setSortBy] = useState('newest')
   const [currentPage, setCurrentPage] = useState(1)
+  const [activeSection, setActiveSection] = useState('all')
   const itemsPerPage = 12
 
   // Mock product data
   const allProducts = [
     {
       id: 1,
-      name: 'Illuminating Nectar',
-      description: 'Radiant serum',
-      price: 124,
-      image: 'https://via.placeholder.com/300x300?text=Illuminating+Nectar',
-      rating: 4.8,
-      reviews: 156,
+      name: 'Radiant Veil Foundation',
+      description: 'Weightless finish for a flawless complexion',
+      price: 68,
+      image: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=800&q=80',
+      rating: 4.9,
+      reviews: 198,
+      category: 'face',
+      badge: 'Best Seller',
     },
     {
       id: 2,
-      name: 'Velvet Veil Cream',
-      description: 'Luxe moisturizer',
-      price: 88,
-      image: 'https://via.placeholder.com/300x300?text=Velvet+Veil+Cream',
-      rating: 4.9,
-      reviews: 203,
+      name: 'Velvet Petal Lipstick',
+      description: 'Satin color with hydrating comfort',
+      price: 42,
+      image: 'https://images.unsplash.com/photo-1513149739851-50f01dfcbd75?auto=format&fit=crop&w=800&q=80',
+      rating: 4.8,
+      reviews: 164,
+      category: 'lips',
     },
     {
       id: 3,
-      name: 'Midnight Renewal',
-      description: 'Night treatment',
-      price: 145,
-      image: 'https://via.placeholder.com/300x300?text=Midnight+Renewal',
+      name: 'Twilight Eye Palette',
+      description: 'Sheen and matte shades for evening glow',
+      price: 78,
+      image: 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=800&q=80',
       rating: 4.7,
-      reviews: 89,
-      badge: 'NEW',
+      reviews: 123,
+      category: 'eyes',
     },
     {
       id: 4,
-      name: 'Silk Cloud Balm',
-      description: 'Silky balm',
-      price: 62,
-      image: 'https://via.placeholder.com/300x300?text=Silk+Cloud+Balm',
-      rating: 4.6,
+      name: 'Sculpting Sable Brush',
+      description: 'Effortless blending for every contour',
+      price: 36,
+      image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=800&q=80',
+      rating: 4.8,
       reviews: 112,
+      category: 'face',
     },
     {
       id: 5,
-      name: 'Golden Elixir',
-      description: 'Facial oil',
-      price: 110,
-      image: 'https://via.placeholder.com/300x300?text=Golden+Elixir',
-      rating: 4.8,
-      reviews: 234,
+      name: 'Dewy Skin Mist',
+      description: 'Hydrating mist for instant glow',
+      price: 34,
+      image: 'https://images.unsplash.com/photo-1536305030016-72a4e91f6912?auto=format&fit=crop&w=800&q=80',
+      rating: 4.5,
+      reviews: 88,
+      category: 'face',
     },
     {
       id: 6,
-      name: 'Aura Eye Gel',
-      description: 'Eye treatment',
-      price: 74,
-      image: 'https://via.placeholder.com/300x300?text=Aura+Eye+Gel',
-      rating: 4.7,
-      reviews: 167,
-      badge: 'BEST SELLER',
+      name: 'Golden Halo Illuminator',
+      description: 'Light-reflecting liquid highlighter',
+      price: 54,
+      image: 'https://images.unsplash.com/photo-1580910051074-b03d7da5f1b8?auto=format&fit=crop&w=800&q=80',
+      rating: 4.9,
+      reviews: 212,
+      category: 'face',
+      badge: 'New',
     },
     {
       id: 7,
-      name: 'Restorative Elixir',
-      description: 'Serum complex',
-      price: 95,
-      image: 'https://via.placeholder.com/300x300?text=Restorative+Elixir',
-      rating: 4.9,
-      reviews: 245,
+      name: 'Petal Soft Balm',
+      description: 'Nourishing balm for lips and cheeks',
+      price: 29,
+      image: 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=800&q=80',
+      rating: 4.7,
+      reviews: 137,
+      category: 'lips',
     },
     {
       id: 8,
-      name: 'Luminous Night Oil',
-      description: 'Night serum',
-      price: 78,
-      image: 'https://via.placeholder.com/300x300?text=Night+Oil',
-      rating: 4.5,
-      reviews: 98,
+      name: 'Silk Finish Primer',
+      description: 'Smoothing base for makeup longevity',
+      price: 46,
+      image: 'https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?auto=format&fit=crop&w=800&q=80',
+      rating: 4.6,
+      reviews: 154,
+      category: 'face',
     },
     {
       id: 9,
-      name: 'Purifying Cleanser',
-      description: 'Gentle cleanser',
-      price: 54,
-      image: 'https://via.placeholder.com/300x300?text=Purifying+Cleanser',
+      name: 'Illuminating Lash Serum',
+      description: 'Nourishing formula for fuller lashes',
+      price: 52,
+      image: 'https://images.unsplash.com/photo-1495121605193-b116b5b9c5d1?auto=format&fit=crop&w=800&q=80',
       rating: 4.8,
-      reviews: 189,
+      reviews: 180,
+      category: 'eyes',
     },
     {
       id: 10,
-      name: 'Hydra Mask',
-      description: 'Weekly mask',
-      price: 68,
-      image: 'https://via.placeholder.com/300x300?text=Hydra+Mask',
-      rating: 4.7,
-      reviews: 134,
-    },
-    {
-      id: 11,
-      name: 'Radiant Gold Serum',
-      description: 'Brightening serum',
-      price: 185,
-      image: 'https://via.placeholder.com/300x300?text=Radiant+Gold+Serum',
-      rating: 4.9,
-      reviews: 256,
-    },
-    {
-      id: 12,
-      name: 'Velvet Essence',
-      description: 'Luxe essence',
-      price: 85,
-      image: 'https://via.placeholder.com/300x300?text=Velvet+Essence',
-      rating: 4.6,
-      reviews: 145,
+      name: 'Velvet Brow Gel',
+      description: 'Soft hold for polished arches',
+      price: 28,
+      image: 'https://images.unsplash.com/photo-1487412912498-0447578fcca8?auto=format&fit=crop&w=800&q=80',
+      rating: 4.4,
+      reviews: 71,
+      category: 'eyes',
     },
   ]
 
@@ -138,10 +131,15 @@ export default function ProductCatalog() {
     }
   })
 
+  // Category filtering
+  const filteredProducts = sortedProducts.filter((product) => {
+    return activeSection === 'all' || product.category === activeSection
+  })
+
   // Pagination
-  const totalPages = Math.ceil(sortedProducts.length / itemsPerPage)
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage)
   const startIdx = (currentPage - 1) * itemsPerPage
-  const paginatedProducts = sortedProducts.slice(startIdx, startIdx + itemsPerPage)
+  const paginatedProducts = filteredProducts.slice(startIdx, startIdx + itemsPerPage)
 
   const handleFilterChange = (filterType, filterValue, isChecked) => {
     // Handle filter changes here
@@ -151,19 +149,40 @@ export default function ProductCatalog() {
   return (
     <div className="pb-24 md:pb-0">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Breadcrumb */}
-        <div className="text-sm text-charcoal/60 mb-8">
-          <a href="/" className="hover:text-brown">Home</a>
-          <span className="mx-2">/</span>
-          <a href="#" className="hover:text-brown">Shop</a>
-          <span className="mx-2">/</span>
-          <span className="text-brown font-medium">Skincare</span>
-        </div>
+        <div className="space-y-8">
+          <div className="rounded-[2rem] overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(201,169,97,0.12),transparent_35%)]">
+            <div className="relative h-[320px] sm:h-[420px] md:h-[480px] bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1517602302552-471fe67acf66?auto=format&fit=crop&w=1600&q=80')" }}>
+              <div className="absolute inset-0 bg-black/20"></div>
+              <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-6 sm:px-12">
+                <p className="uppercase tracking-[0.3em] text-xs text-white/70 mb-4">Complexion Rituals</p>
+                <h1 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white leading-tight max-w-3xl">The Art of Complexion</h1>
+                <p className="mt-5 max-w-2xl text-sm sm:text-base text-white/85">Discover the signature collection for luminous skin, effortless coverage, and timeless radiance.</p>
+              </div>
+            </div>
+          </div>
 
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-serif font-bold text-brown mb-2">The Skincare Collection</h1>
-          <p className="text-charcoal/70">Curated rituals designed for pure indulgence and visible results. Every drop is a promise of sensory luxury.</p>
+          <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
+            {['all', 'face', 'eyes', 'lips'].map((section) => (
+              <button
+                key={section}
+                onClick={() => {
+                  setActiveSection(section)
+                  setCurrentPage(1)
+                }}
+                className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
+                  activeSection === section
+                    ? 'bg-brown text-white shadow-lg shadow-brown/10'
+                    : 'bg-white text-brown border border-brown/10 hover:bg-brown/5'
+                }`}
+              >
+                {section === 'all' ? 'All Products' : section.charAt(0).toUpperCase() + section.slice(1)}
+              </button>
+            ))}
+          </div>
+
+          <div className="text-sm text-charcoal/60">
+            <p className="mb-2">Curated essentials for every look — from dewy skin to evening glamour.</p>
+          </div>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">

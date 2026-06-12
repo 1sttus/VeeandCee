@@ -17,12 +17,12 @@ export default function ProductDetails() {
     name: 'Luminaire Restorative Serum',
     rating: 4.8,
     reviews: 324,
-    price: 128.00,
+    price: 128.0,
     images: [
-      'https://via.placeholder.com/600x800?text=Product+Main',
-      'https://via.placeholder.com/600x800?text=Product+Alt+1',
-      'https://via.placeholder.com/600x800?text=Product+Alt+2',
-      'https://via.placeholder.com/600x800?text=Product+Alt+3',
+      'https://images.unsplash.com/photo-1517602302552-471fe67acf66?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1522336572468-17ff1b91a8dd?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1511988617509-a57c8a288659?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1523381217340-3f3e0f63052b?auto=format&fit=crop&w=900&q=80',
     ],
     description: 'A potent, lightweight serum designed to awaken your skin\'s natural brilliance. Formulated with rare botanical extracts and a triple-peptide complex to visibly firm, brighten, and deeply hydrate.',
     benefits: [
@@ -40,7 +40,7 @@ export default function ProductDetails() {
         id: 2,
         name: 'Velvet Night Balm',
         price: 110,
-        image: 'https://via.placeholder.com/300x300?text=Velvet+Night',
+        image: 'https://images.unsplash.com/photo-1534531688091-6c16e3c4a402?auto=format&fit=crop&w=600&q=80',
         rating: 4.9,
         reviews: 89,
       },
@@ -48,7 +48,7 @@ export default function ProductDetails() {
         id: 3,
         name: 'Golden Elixir Oil',
         price: 95,
-        image: 'https://via.placeholder.com/300x300?text=Golden+Oil',
+        image: 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=600&q=80',
         rating: 4.8,
         reviews: 156,
       },
@@ -56,14 +56,14 @@ export default function ProductDetails() {
         id: 4,
         name: 'Silk Cleanser',
         price: 62,
-        image: 'https://via.placeholder.com/300x300?text=Cleanser',
+        image: 'https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&w=600&q=80',
         rating: 4.7,
         reviews: 234,
       },
     ],
     testimonials: [
       {
-        image: 'https://via.placeholder.com/300x300?text=Before+After+1',
+        image: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=600&q=80',
         timeframe: 'Day 21',
         category: 'User Results',
         quote: 'My skin has never felt this plump. The radiance is completely gone.',
@@ -76,6 +76,7 @@ export default function ProductDetails() {
         rating: 5,
         content: "I used this serum twice daily for a week. Within the first week, my skin felt completely transformed. The product is lightweight and absorbs almost instantly. My skin looks more plump, dewy and much more hydrated. It's become the highlight of my morning ritual. Highly recommend for anyone with sensitive skin looking for radiance.",
         author: 'Amanda N.',
+        authorImage: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80',
         date: '2 days ago',
         verified: true,
       },
@@ -84,6 +85,7 @@ export default function ProductDetails() {
         rating: 4,
         content: 'The texture is heavenly and it absorbs without instantly. My makeup sits so beautifully over it. The price is premium but it\'s worth every drop.',
         author: 'Lauren W.',
+        authorImage: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=200&q=80',
         date: '1 week ago',
         verified: true,
       },
@@ -326,7 +328,7 @@ export default function ProductDetails() {
             <div>
               <h2 className="text-2xl font-serif font-bold text-brown mb-2">Community Reviews</h2>
               <p className="text-charcoal/70">
-                4.8 out of 5 based on {product.reviews.length} reviews
+                4.8 out of 5 based on {product.customerReviews.length} reviews
               </p>
             </div>
             <button className="bg-brown hover:bg-dark-brown text-white font-semibold py-2 px-6 rounded-lg btn-hover transition-colors text-sm">

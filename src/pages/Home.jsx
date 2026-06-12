@@ -12,48 +12,58 @@ export default function Home() {
   const trendingProducts = [
     {
       id: 1,
-      name: 'Golden Dew Elixir',
-      description: 'Luminous facial serum',
-      price: 84,
-      image: 'https://via.placeholder.com/300x300?text=Golden+Dew+Elixir',
-      rating: 4.8,
-      reviews: 124,
+      name: 'Radiant Veil Foundation',
+      description: 'Silky coverage with luminous finish',
+      price: 68,
+      image: 'https://images.unsplash.com/photo-1517602302552-471fe67acf66?auto=format&fit=crop&w=900&q=80',
+      rating: 4.9,
+      reviews: 208,
+      badge: 'Best Seller',
     },
     {
       id: 2,
-      name: 'Velvet Night Balm',
-      description: 'Recovery treatment',
-      price: 110,
-      image: 'https://via.placeholder.com/300x300?text=Velvet+Night+Balm',
-      rating: 4.9,
-      reviews: 89,
-      badge: 'Best Seller',
+      name: 'Velvet Petal Lipstick',
+      description: 'Creamy color with satin comfort',
+      price: 42,
+      image: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=900&q=80',
+      rating: 4.8,
+      reviews: 134,
+    },
+    {
+      id: 3,
+      name: 'Twilight Eye Palette',
+      description: 'Rich, blendable mineral shades',
+      price: 78,
+      image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=900&q=80',
+      rating: 4.7,
+      reviews: 97,
     },
   ]
 
   const trendingCategories = [
-    { id: 'skincare', label: 'Skincare', color: 'bg-rose' },
-    { id: 'serums', label: 'Serums', color: 'bg-gold' },
-    { id: 'cleansers', label: 'Cleansers', color: 'bg-brown' },
+    { id: 'all', label: 'All Products', color: 'bg-brown' },
+    { id: 'face', label: 'Face', color: 'bg-gold' },
+    { id: 'eyes', label: 'Eyes', color: 'bg-rose' },
+    { id: 'lips', label: 'Lips', color: 'bg-brown/70' },
   ]
 
   const testimonials = [
     {
-      image: 'https://via.placeholder.com/300x300?text=Testimonial+1',
+      image: 'https://images.unsplash.com/photo-1526045612212-70caf35c14df?auto=format&fit=crop&w=900&q=80',
       timeframe: 'Day 21',
       category: 'Before & After',
       quote: 'My skin has never felt this plump. The radiance is completely gone.',
       author: 'Sarah J.',
     },
     {
-      image: 'https://via.placeholder.com/300x300?text=Testimonial+2',
+      image: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80',
       timeframe: 'Day 30',
       category: 'Results',
       quote: 'Visible difference in my fine lines. This is now a staple in my routine.',
       author: 'Elena V.',
     },
     {
-      image: 'https://via.placeholder.com/300x300?text=Testimonial+3',
+      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=80',
       timeframe: 'Day 14',
       category: 'Transformation',
       quote: 'The brightness is undeniable. I woke up looking refreshed.',
@@ -63,21 +73,21 @@ export default function Home() {
 
   const journalArticles = [
     {
-      image: 'https://via.placeholder.com/400x300?text=Morning+Glow',
+      image: 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80',
       title: 'The 5-Minute Morning Glow Ritual',
-      excerpt: 'Master a skincare routine...',
+      excerpt: 'Master a skincare ritual that feels luxurious and effortless.',
       link: '#',
     },
     {
-      image: 'https://via.placeholder.com/400x300?text=Botanical',
+      image: 'https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&w=900&q=80',
       title: 'Decoding Botanical Ingredients',
-      excerpt: 'Discover the power of nature...',
+      excerpt: 'Discover the power of nature in every drop of your routine.',
       link: '#',
     },
     {
-      image: 'https://via.placeholder.com/400x300?text=Green',
+      image: 'https://images.unsplash.com/photo-1501005173677-1ef0c287b13c?auto=format&fit=crop&w=900&q=80',
       title: 'Green Hydration Secrets',
-      excerpt: 'Unlock hydration from within...',
+      excerpt: 'Unlock long-lasting moisture with clean, calm formulas.',
       link: '#',
     },
   ]
@@ -86,10 +96,10 @@ export default function Home() {
     <div className="pb-24 md:pb-0">
       {/* Hero Section */}
       <HeroSection
-        title="Rituals of Radiance"
-        subtitle="Discover curated skincare that elevates your beauty routine into a sanctuary of self-care."
-        backgroundImage="https://via.placeholder.com/1600x600?text=Hero+Banner"
-        ctaText="Shop the Edit"
+        title="The Art of Complexion"
+        subtitle="Discover elevated essentials designed for luminous, natural beauty in every ritual."
+        backgroundImage="https://images.unsplash.com/photo-1517602302552-471fe67acf66?auto=format&fit=crop&w=1600&q=80"
+        ctaText="Explore Now"
         ctaLink="/shop/skincare"
       />
 
