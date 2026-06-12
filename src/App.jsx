@@ -15,6 +15,7 @@ import Subscription from './pages/Subscription'
 import Returns from './pages/Returns'
 import ContactUs from './pages/ContactUs'
 import Shipping from './pages/Shipping'
+import AdminDashboard from './pages/AdminDashboard'
 import NotFound from './pages/NotFound'
 import Login from './pages/Auth/Login'
 import SignUp from './pages/Auth/SignUp'
@@ -45,6 +46,7 @@ export default function App() {
                 <Route path="/product/:id" element={<ProductDetails />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/account" element={<Account />} />
+                <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="*" element={<NotFound />} />
