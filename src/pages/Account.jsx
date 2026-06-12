@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { LogOut, MapPin, Heart, Award, ShoppingBag } from 'lucide-react'
+import { useWishlist } from '../context/WishlistContext'
 
 export default function Account() {
   const [activeTab, setActiveTab] = useState('overview')
+  const { wishlist } = useWishlist()
 
   const userData = {
     name: 'Elena',
@@ -94,7 +96,7 @@ export default function Account() {
               <Heart size={24} className="text-rose" />
               <h3 className="font-serif font-bold text-brown">Wishlist</h3>
             </div>
-            <p className="text-2xl font-serif font-bold text-brown mb-2">5</p>
+            <p className="text-2xl font-serif font-bold text-brown mb-2">{wishlist.length}</p>
             <p className="text-xs text-charcoal/70">Saved for later</p>
           </div>
 

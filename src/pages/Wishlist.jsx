@@ -1,8 +1,8 @@
-import { useAuth } from '../context/AuthContext'
+import { useWishlist } from '../context/WishlistContext'
 import ProductCard from '../components/ProductCard'
 
 export default function Wishlist() {
-  const { wishlist } = useAuth()
+  const { wishlist } = useWishlist()
 
   return (
     <div className="pb-24">

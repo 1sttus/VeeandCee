@@ -11,7 +11,7 @@ export default function MobileNav() {
     { icon: Home, label: 'Home', path: '/' },
     { icon: LayoutGrid, label: 'Shop', path: '/shop' },
     { icon: ShoppingBag, label: 'Cart', path: '/cart', badge: cartCount },
-    { icon: Heart, label: 'Wishlist', path: '/account?tab=wishlist' },
+    { icon: Heart, label: 'Wishlist', path: '/wishlist' },
     { icon: User, label: 'Profile', path: '/account' },
   ]
 
