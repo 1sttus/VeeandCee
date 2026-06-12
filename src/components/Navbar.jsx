@@ -1,13 +1,25 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Menu, X, Search, Heart, ShoppingBag, User } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('')
   const { user, logout } = useAuth()
+  const navigate = useNavigate()
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
+
+  const handleSearchSubmit = (event) => {
+    event.preventDefault()
+    if (!searchTerm.trim()) return
+    navigate(`/search?q=${encodeURIComponent(searchTerm.trim())}`)
+    setSearchTerm('')
+    setIsSearchOpen(false)
+    setIsMenuOpen(false)
+  }
 
   const menuItems = [
     { label: 'Skincare', href: '/shop/skincare' },
@@ -41,8 +53,19 @@ export default function Navbar() {
 
           {/* Desktop Icons */}
           <div className="hidden md:flex items-center gap-6">
-            <button className="p-2 hover:bg-brown/5 rounded-lg transition-colors" aria-label="Search">
+            <button
+              onClick={() => setIsSearchOpen((open) => !open)}
+              className="p-2 hover:bg-brown/5 rounded-lg transition-colors"
+              aria-label="Search"
+            >
               <Search size={20} className="text-charcoal" />
+            </button>
+            <button
+              onClick={() => navigate('/wishlist')}
+              className="p-2 hover:bg-brown/5 rounded-lg transition-colors"
+              aria-label="Wishlist"
+            >
+              <Heart size={20} className="text-charcoal" />
             </button>
             {user ? (
               <div className="flex items-center gap-3">
@@ -57,9 +80,6 @@ export default function Navbar() {
                 <Link to="/signup" className="text-sm text-brown font-medium">Create account</Link>
               </div>
             )}
-            <button className="p-2 hover:bg-brown/5 rounded-lg transition-colors" aria-label="Wishlist">
-              <Heart size={20} className="text-charcoal" />
-            </button>
             <Link to="/cart" className="p-2 hover:bg-brown/5 rounded-lg transition-colors relative" aria-label="Cart">
               <ShoppingBag size={20} className="text-charcoal" />
               <span className="absolute top-1 right-1 w-2 h-2 bg-gold rounded-full"></span>
@@ -75,6 +95,23 @@ export default function Navbar() {
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
+
+        {isSearchOpen && (
+          <form onSubmit={handleSearchSubmit} className="hidden md:flex items-center justify-end mt-4 space-x-3">
+            <input
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+              placeholder="Search products, gift sets, FAQs..."
+              className="w-full max-w-sm rounded-full border border-brown/20 bg-white px-4 py-2 text-sm text-charcoal focus:outline-none focus:border-brown"
+            />
+            <button
+              type="submit"
+              className="rounded-full bg-brown px-5 py-2 text-sm text-white hover:bg-dark-brown transition-colors"
+            >
+              Go
+            </button>
+          </form>
+        )}
 
         {/* Mobile Menu */}
         {isMenuOpen && (
@@ -93,7 +130,7 @@ export default function Navbar() {
               {user ? (
                 <div className="space-y-2">
                   <Link to="/account" className="block text-charcoal">Account</Link>
-                  <button onClick={logout} className="block text-left text-charcoal">Log out</button>
+                  <button onClick={() => { logout(); setIsMenuOpen(false) }} className="block text-left text-charcoal">Log out</button>
                 </div>
               ) : (
                 <div className="space-y-2">

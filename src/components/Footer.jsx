@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { Camera, Bookmark, Music2 } from 'lucide-react'
 
 export default function Footer() {
@@ -5,17 +6,17 @@ export default function Footer() {
 
   const footerLinks = {
     shop: [
-      { label: 'Skincare', href: '#' },
-      { label: 'Makeup', href: '#' },
-      { label: 'Collections', href: '#' },
-      { label: 'Gift Sets', href: '#' },
-      { label: 'Subscriptions', href: '#' },
+      { label: 'Skincare', href: '/shop/skincare' },
+      { label: 'Makeup', href: '/shop/makeup' },
+      { label: 'Collections', href: '/shop' },
+      { label: 'Gift Sets', href: '/gift-sets' },
+      { label: 'Subscriptions', href: '/subscription' },
     ],
     support: [
-      { label: 'Shipping', href: '#' },
-      { label: 'Returns', href: '#' },
-      { label: 'Contact Us', href: '#' },
-      { label: 'FAQ', href: '#' },
+      { label: 'Shipping', href: '/shipping' },
+      { label: 'Returns', href: '/returns' },
+      { label: 'Contact Us', href: '/contact' },
+      { label: 'FAQ', href: '/faq' },
     ],
     legal: [
       { label: 'Privacy Policy', href: '#' },

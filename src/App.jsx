@@ -6,6 +6,15 @@ import ProductCatalog from './pages/ProductCatalog'
 import ProductDetails from './pages/ProductDetails'
 import Cart from './pages/Cart'
 import Account from './pages/Account'
+import SearchResults from './pages/SearchResults'
+import Wishlist from './pages/Wishlist'
+import Chat from './pages/Chat'
+import FAQ from './pages/FAQ'
+import GiftSets from './pages/GiftSets'
+import Subscription from './pages/Subscription'
+import Returns from './pages/Returns'
+import ContactUs from './pages/ContactUs'
+import Shipping from './pages/Shipping'
 import NotFound from './pages/NotFound'
 import Login from './pages/Auth/Login'
 import SignUp from './pages/Auth/SignUp'
@@ -17,12 +26,22 @@ export default function App() {
     <AuthProvider>
       <Router>
         <ErrorBoundary>
-          <div className="flex flex-col min-h-screen bg-cream">
+          <div className="flex flex-col min-h-screen bg-cream overflow-x-hidden">
             <Navbar />
             <main className="flex-grow">
               <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/shop/skincare" element={<ProductCatalog />} />
+                <Route path="/shop" element={<ProductCatalog />} />
+                <Route path="/shop/:category" element={<ProductCatalog />} />
+                <Route path="/search" element={<SearchResults />} />
+                <Route path="/wishlist" element={<Wishlist />} />
+                <Route path="/chat" element={<Chat />} />
+                <Route path="/faq" element={<FAQ />} />
+                <Route path="/gift-sets" element={<GiftSets />} />
+                <Route path="/subscription" element={<Subscription />} />
+                <Route path="/returns" element={<Returns />} />
+                <Route path="/contact" element={<ContactUs />} />
+                <Route path="/shipping" element={<Shipping />} />
                 <Route path="/product/:id" element={<ProductDetails />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/account" element={<Account />} />

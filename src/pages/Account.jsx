@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { LogOut, MapPin, Heart, Award, ShoppingBag } from 'lucide-react'
 import MobileNav from '../components/MobileNav'
 
@@ -47,7 +48,7 @@ export default function Account() {
   ]
 
   return (
-    <div className="pb-24 md:pb-0">
+    <div className="pb-24 md:pb-0 overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-12">
@@ -63,9 +64,9 @@ export default function Account() {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-12 min-w-0">
           {/* Loyalty Tier Card */}
-          <div className="bg-gradient-to-br from-gold/20 to-rose/10 p-6 rounded-lg border border-gold/30">
+          <div className="bg-gradient-to-br from-gold/20 to-rose/10 p-6 rounded-lg border border-gold/30 min-w-0">
             <div className="flex items-center gap-2 mb-4">
               <Award size={24} className="text-gold" />
               <h3 className="font-serif font-bold text-brown">Loyalty Tier</h3>
@@ -79,7 +80,7 @@ export default function Account() {
           </div>
 
           {/* Orders Summary */}
-          <div className="bg-white p-6 rounded-lg border border-brown/10">
+          <div className="bg-white p-6 rounded-lg border border-brown/10 min-w-0">
             <div className="flex items-center gap-2 mb-4">
               <ShoppingBag size={24} className="text-brown" />
               <h3 className="font-serif font-bold text-brown">Orders</h3>
@@ -89,7 +90,7 @@ export default function Account() {
           </div>
 
           {/* Wishlist */}
-          <div className="bg-white p-6 rounded-lg border border-brown/10">
+          <div className="bg-white p-6 rounded-lg border border-brown/10 min-w-0">
             <div className="flex items-center gap-2 mb-4">
               <Heart size={24} className="text-rose" />
               <h3 className="font-serif font-bold text-brown">Wishlist</h3>
@@ -99,7 +100,7 @@ export default function Account() {
           </div>
 
           {/* Addresses */}
-          <div className="bg-white p-6 rounded-lg border border-brown/10">
+          <div className="bg-white p-6 rounded-lg border border-brown/10 min-w-0">
             <div className="flex items-center gap-2 mb-4">
               <MapPin size={24} className="text-charcoal" />
               <h3 className="font-serif font-bold text-brown">Addresses</h3>
@@ -159,15 +160,15 @@ export default function Account() {
             <div>
               <h3 className="font-serif font-bold text-brown text-lg mb-4">Quick Links</h3>
               <div className="space-y-2">
-                <a href="/shop/skincare" className="block p-3 bg-white rounded-lg border border-brown/10 hover:border-brown transition-colors font-medium text-sm text-brown">
+                <Link to="/shop" className="block p-3 bg-white rounded-lg border border-brown/10 hover:border-brown transition-colors font-medium text-sm text-brown">
                   Continue Shopping
-                </a>
-                <a href="#" className="block p-3 bg-white rounded-lg border border-brown/10 hover:border-brown transition-colors font-medium text-sm text-brown">
+                </Link>
+                <Link to="/wishlist" className="block p-3 bg-white rounded-lg border border-brown/10 hover:border-brown transition-colors font-medium text-sm text-brown">
                   View Wishlist
-                </a>
-                <a href="#" className="block p-3 bg-white rounded-lg border border-brown/10 hover:border-brown transition-colors font-medium text-sm text-brown">
+                </Link>
+                <Link to="/account" className="block p-3 bg-white rounded-lg border border-brown/10 hover:border-brown transition-colors font-medium text-sm text-brown">
                   Download Invoice
-                </a>
+                </Link>
               </div>
             </div>
           </div>

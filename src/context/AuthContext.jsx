@@ -3,6 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 const AuthContext = createContext(null)
 
 const LOCAL_KEY = 'veeandcee_auth'
+const WISHLIST_KEY = 'veeandcee_wishlist'
 
 // simple mock API using localStorage
 const mockApi = {
@@ -27,12 +28,17 @@ const mockApi = {
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem(LOCAL_KEY) || 'null'))
+  const [wishlist, setWishlist] = useState(() => JSON.parse(localStorage.getItem(WISHLIST_KEY) || '[]'))
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
   useEffect(() => {
     localStorage.setItem(LOCAL_KEY, JSON.stringify(user))
   }, [user])
+
+  useEffect(() => {
+    localStorage.setItem(WISHLIST_KEY, JSON.stringify(wishlist))
+  }, [wishlist])
 
   const register = async ({ name, email, password }) => {
     setLoading(true)
@@ -68,8 +74,28 @@ export function AuthProvider({ children }) {
     setUser(null)
   }
 
+  const addWishlistItem = (item) => {
+    setWishlist((current) => {
+      if (current.some((product) => product.id === item.id)) return current
+      return [...current, item]
+    })
+  }
+
+  const removeWishlistItem = (id) => {
+    setWishlist((current) => current.filter((product) => product.id !== id))
+  }
+
+  const toggleWishlistItem = (item) => {
+    setWishlist((current) => {
+      if (current.some((product) => product.id === item.id)) {
+        return current.filter((product) => product.id !== item.id)
+      }
+      return [...current, item]
+    })
+  }
+
   return (
-    <AuthContext.Provider value={{ user, loading, error, register, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, error, register, login, logout, wishlist, addWishlistItem, removeWishlistItem, toggleWishlistItem }}>
       {children}
     </AuthContext.Provider>
   )

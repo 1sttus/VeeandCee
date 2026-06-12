@@ -1,120 +1,38 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import CategoryFilter from '../components/CategoryFilter'
 import ProductCard from '../components/ProductCard'
 import MobileNav from '../components/MobileNav'
+import products from '../data/products'
+
+const categoryLabels = {
+  all: 'All Products',
+  makeup: 'Makeup',
+  body: 'Body',
+  hair: 'Hair',
+  fragrance: 'Fragrance',
+  skincare: 'Skincare',
+  'gift-sets': 'Gift Sets',
+}
 
 export default function ProductCatalog() {
+  const { category } = useParams()
   const [sortBy, setSortBy] = useState('newest')
   const [currentPage, setCurrentPage] = useState(1)
   const [activeSection, setActiveSection] = useState('all')
   const itemsPerPage = 12
 
-  // Mock product data
-  const allProducts = [
-    {
-      id: 1,
-      name: 'Radiant Veil Foundation',
-      description: 'Weightless finish for a flawless complexion',
-      price: 68,
-      image: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=800&q=80',
-      rating: 4.9,
-      reviews: 198,
-      category: 'face',
-      badge: 'Best Seller',
-    },
-    {
-      id: 2,
-      name: 'Velvet Petal Lipstick',
-      description: 'Satin color with hydrating comfort',
-      price: 42,
-      image: 'https://images.unsplash.com/photo-1513149739851-50f01dfcbd75?auto=format&fit=crop&w=800&q=80',
-      rating: 4.8,
-      reviews: 164,
-      category: 'lips',
-    },
-    {
-      id: 3,
-      name: 'Twilight Eye Palette',
-      description: 'Sheen and matte shades for evening glow',
-      price: 78,
-      image: 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=800&q=80',
-      rating: 4.7,
-      reviews: 123,
-      category: 'eyes',
-    },
-    {
-      id: 4,
-      name: 'Sculpting Sable Brush',
-      description: 'Effortless blending for every contour',
-      price: 36,
-      image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=800&q=80',
-      rating: 4.8,
-      reviews: 112,
-      category: 'face',
-    },
-    {
-      id: 5,
-      name: 'Dewy Skin Mist',
-      description: 'Hydrating mist for instant glow',
-      price: 34,
-      image: 'https://images.unsplash.com/photo-1536305030016-72a4e91f6912?auto=format&fit=crop&w=800&q=80',
-      rating: 4.5,
-      reviews: 88,
-      category: 'face',
-    },
-    {
-      id: 6,
-      name: 'Golden Halo Illuminator',
-      description: 'Light-reflecting liquid highlighter',
-      price: 54,
-      image: 'https://images.unsplash.com/photo-1580910051074-b03d7da5f1b8?auto=format&fit=crop&w=800&q=80',
-      rating: 4.9,
-      reviews: 212,
-      category: 'face',
-      badge: 'New',
-    },
-    {
-      id: 7,
-      name: 'Petal Soft Balm',
-      description: 'Nourishing balm for lips and cheeks',
-      price: 29,
-      image: 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=800&q=80',
-      rating: 4.7,
-      reviews: 137,
-      category: 'lips',
-    },
-    {
-      id: 8,
-      name: 'Silk Finish Primer',
-      description: 'Smoothing base for makeup longevity',
-      price: 46,
-      image: 'https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?auto=format&fit=crop&w=800&q=80',
-      rating: 4.6,
-      reviews: 154,
-      category: 'face',
-    },
-    {
-      id: 9,
-      name: 'Illuminating Lash Serum',
-      description: 'Nourishing formula for fuller lashes',
-      price: 52,
-      image: 'https://images.unsplash.com/photo-1495121605193-b116b5b9c5d1?auto=format&fit=crop&w=800&q=80',
-      rating: 4.8,
-      reviews: 180,
-      category: 'eyes',
-    },
-    {
-      id: 10,
-      name: 'Velvet Brow Gel',
-      description: 'Soft hold for polished arches',
-      price: 28,
-      image: 'https://images.unsplash.com/photo-1487412912498-0447578fcca8?auto=format&fit=crop&w=800&q=80',
-      rating: 4.4,
-      reviews: 71,
-      category: 'eyes',
-    },
-  ]
+  useEffect(() => {
+    if (category && categoryLabels[category]) {
+      setActiveSection(category)
+    } else {
+      setActiveSection('all')
+    }
+    setCurrentPage(1)
+  }, [category])
+
+  const allProducts = products
 
   // Sorting logic
   const sortedProducts = [...allProducts].sort((a, b) => {
@@ -131,7 +49,6 @@ export default function ProductCatalog() {
     }
   })
 
-  // Category filtering
   const filteredProducts = sortedProducts.filter((product) => {
     return activeSection === 'all' || product.category === activeSection
   })
@@ -142,27 +59,28 @@ export default function ProductCatalog() {
   const paginatedProducts = filteredProducts.slice(startIdx, startIdx + itemsPerPage)
 
   const handleFilterChange = (filterType, filterValue, isChecked) => {
-    // Handle filter changes here
     console.log(filterType, filterValue, isChecked)
   }
 
+  const sectionLabel = categoryLabels[activeSection] || categoryLabels.all
+
   return (
-    <div className="pb-24 md:pb-0">
+    <div className="pb-24 md:pb-0 overflow-x-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-8">
           <div className="rounded-[2rem] overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(201,169,97,0.12),transparent_35%)]">
             <div className="relative h-[320px] sm:h-[420px] md:h-[480px] bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1517602302552-471fe67acf66?auto=format&fit=crop&w=1600&q=80')" }}>
               <div className="absolute inset-0 bg-black/20"></div>
               <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-6 sm:px-12">
-                <p className="uppercase tracking-[0.3em] text-xs text-white/70 mb-4">Complexion Rituals</p>
-                <h1 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white leading-tight max-w-3xl">The Art of Complexion</h1>
-                <p className="mt-5 max-w-2xl text-sm sm:text-base text-white/85">Discover the signature collection for luminous skin, effortless coverage, and timeless radiance.</p>
+                <p className="uppercase tracking-[0.3em] text-xs text-white/70 mb-4">{sectionLabel}</p>
+                <h1 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white leading-tight max-w-3xl">Shop {sectionLabel} Essentials</h1>
+                <p className="mt-5 max-w-2xl text-sm sm:text-base text-white/85">Discover the signature collection for beauty rituals, nourishing treats, and essential gift sets.</p>
               </div>
             </div>
           </div>
 
           <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
-            {['all', 'face', 'eyes', 'lips'].map((section) => (
+            {['all', 'makeup', 'body', 'hair', 'fragrance'].map((section) => (
               <button
                 key={section}
                 onClick={() => {
@@ -175,7 +93,7 @@ export default function ProductCatalog() {
                     : 'bg-white text-brown border border-brown/10 hover:bg-brown/5'
                 }`}
               >
-                {section === 'all' ? 'All Products' : section.charAt(0).toUpperCase() + section.slice(1)}
+                {categoryLabels[section]}
               </button>
             ))}
           </div>

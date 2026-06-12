@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Heart, ShoppingCart } from 'lucide-react'
+import { useAuth } from '../context/AuthContext'
 import PropTypes from 'prop-types'
 
 export default function ProductCard({ product }) {
-  const [isWishlisted, setIsWishlisted] = useState(false)
+  const { wishlist, toggleWishlistItem } = useAuth()
+  const isWishlisted = wishlist.some((item) => item.id === product.id)
 
   const renderStars = (rating) => {
     return (
@@ -35,9 +36,10 @@ export default function ProductCard({ product }) {
           </div>
         )}
         <button
-          onClick={() => setIsWishlisted(!isWishlisted)}
+          onClick={() => toggleWishlistItem(product)}
           className="absolute top-3 right-3 p-2 bg-white/90 rounded-full hover:bg-rose/20 transition-colors"
           aria-label="Add to wishlist"
+          aria-pressed={isWishlisted}
         >
           <Heart
             size={18}

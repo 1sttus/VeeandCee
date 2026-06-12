@@ -4,9 +4,9 @@ import { Home, ShoppingBag, Heart, MessageSquare, User } from 'lucide-react'
 export default function MobileNav() {
   const navItems = [
     { icon: Home, label: 'Home', href: '/' },
-    { icon: ShoppingBag, label: 'Shop', href: '/shop/skincare' },
-    { icon: Heart, label: 'Wishlist', href: '#' },
-    { icon: MessageSquare, label: 'Chat', href: '#' },
+    { icon: ShoppingBag, label: 'Shop', href: '/shop' },
+    { icon: Heart, label: 'Wishlist', href: '/wishlist' },
+    { icon: MessageSquare, label: 'Chat', href: '/chat' },
     { icon: User, label: 'Profile', href: '/account' },
   ]
 
