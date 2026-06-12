@@ -17,6 +17,12 @@ npm install
 npm run dev
 ```
 
+### Run tests and linters
+```bash
+npm run lint
+npm run test
+```
+
 The application will automatically open at **http://localhost:3000**
 
 ---

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Heart, ShoppingCart } from 'lucide-react'
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 
 export default function ProductCard({ product }) {
   const [isWishlisted, setIsWishlisted] = useState(false)
@@ -25,6 +26,8 @@ export default function ProductCard({ product }) {
           src={product.image}
           alt={product.name}
           className="w-full h-full object-cover"
+          loading="lazy"
+          decoding="async"
         />
         {product.badge && (
           <div className="absolute top-3 left-3 bg-gold/20 text-brown px-2 py-1 rounded text-xs font-semibold">
@@ -78,4 +81,17 @@ export default function ProductCard({ product }) {
       </div>
     </div>
   )
+}
+
+ProductCard.propTypes = {
+  product: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    name: PropTypes.string.isRequired,
+    image: PropTypes.string,
+    price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    description: PropTypes.string,
+    rating: PropTypes.number,
+    reviews: PropTypes.number,
+    badge: PropTypes.string,
+  }).isRequired,
 }
