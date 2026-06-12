@@ -9,7 +9,7 @@ import { AuthProvider } from './context/AuthContext'
 import { CartProvider } from './context/CartContext'
 import { WishlistProvider } from './context/WishlistContext'
 import { OrderProvider } from './context/OrderContext'
-import AdminRoute from './components/admin/AdminRoute'
+import AdminRoute from './pages/AdminRoute'
 
 const Home = lazy(() => import('./pages/Home'))
 const ProductCatalog = lazy(() => import('./pages/ProductCatalog'))
@@ -28,8 +28,9 @@ const Subscription = lazy(() => import('./pages/Subscription'))
 const Returns = lazy(() => import('./pages/Returns'))
 const ContactUs = lazy(() => import('./pages/ContactUs'))
 const Shipping = lazy(() => import('./pages/Shipping'))
-const AdminLayout = lazy(() => import('./admin/AdminLayout'))
-const AdminDashboard = lazy(() => import('./pages/AdminDashboard')) // Refactored as Overview
+const AdminLayout = lazy(() => import('./pages/AdminLayout'))
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'))
+const AdminLogin = lazy(() => import('./pages/Auth/AdminLogin'))
 const Account = lazy(() => import('./pages/Account'))
 const Login = lazy(() => import('./pages/Auth/Login'))
 const SignUp = lazy(() => import('./pages/Auth/SignUp'))
@@ -75,12 +76,14 @@ export default function App() {
                         <Route path="/account" element={<Account />} />
                         
                         {/* Protected Admin Routes */}
+                        <Route path="/admin/login" element={<AdminLogin />} />
                         <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
                           <Route index element={<AdminDashboard />} />
                           <Route path="products" element={<AdminDashboard />} />
                           <Route path="orders" element={<AdminDashboard />} />
                           <Route path="inventory" element={<AdminDashboard />} />
                           <Route path="customers" element={<AdminDashboard />} />
+                          <Route path="analytics" element={<AdminDashboard />} />
                         </Route>
 
                         <Route path="/login" element={<Login />} />

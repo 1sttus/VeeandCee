@@ -1,5 +1,5 @@
-import { Link, Outlet, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Package, ShoppingCart, Users, BarChart3, Boxes, ArrowLeft } from 'lucide-react';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { LayoutDashboard, Package, ShoppingCart, Users, BarChart3, Boxes, ArrowLeft, LogOut } from 'lucide-react';
 import MobileNav from '../components/MobileNav';
 
 const sidebarItems = [
@@ -13,6 +13,14 @@ const sidebarItems = [
 
 export default function AdminLayout() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const auth = JSON.parse(localStorage.getItem('adminAuth'));
+  const adminEmail = auth?.email || 'Admin User';
+
+  const handleLogout = () => {
+    localStorage.removeItem("adminAuth");
+    navigate('/admin/login');
+  };
 
   return (
     <div className="min-h-screen bg-cream/30 flex overflow-hidden">
@@ -50,6 +58,21 @@ export default function AdminLayout() {
 
       {/* Main Content Area */}
       <main className="flex-1 overflow-y-auto h-screen relative">
+        {/* Admin Header */}
+        <header className="sticky top-0 z-10 backdrop-blur-md bg-white/30 border-b border-brown/5 px-8 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-xs font-medium text-charcoal/70 select-none">
+              Connected as <span className="text-brown font-semibold">{adminEmail}</span>
+            </span>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-2 text-xs font-bold text-rose hover:text-rose/80 transition-colors uppercase tracking-widest px-4 py-2 rounded-full bg-rose/5 border border-rose/10"
+          >
+            <LogOut size={14} /> Logout
+          </button>
+        </header>
         <div className="p-4 sm:p-8 lg:p-12 pb-32">
           <div className="max-w-6xl mx-auto">
             <Outlet />
