@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom'
-import { Home, ShoppingBag, Heart, MessageSquare, User } from 'lucide-react'
+import { Home, ShoppingBag, Heart, ShoppingCart, User } from 'lucide-react'
 
 export default function MobileNav() {
   const navItems = [
     { icon: Home, label: 'Home', href: '/' },
     { icon: ShoppingBag, label: 'Shop', href: '/shop' },
     { icon: Heart, label: 'Wishlist', href: '/wishlist' },
-    { icon: MessageSquare, label: 'Chat', href: '/chat' },
+    { icon: ShoppingCart, label: 'Cart List', href: '/cart' },
     { icon: User, label: 'Profile', href: '/account' },
   ]
 
