@@ -1,16 +1,22 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Menu, X, Search, Heart, ShoppingBag, User } from 'lucide-react'
+import { Menu, X, Search, Heart, ShoppingBag, User, ChevronDown } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [isAccountOpen, setIsAccountOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const { user, logout } = useAuth()
   const navigate = useNavigate()
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
+  const toggleAccountMenu = () => setIsAccountOpen((open) => !open)
+  const openSearchModal = () => {
+    setIsSearchOpen(true)
+    setIsMenuOpen(false)
+  }
 
   const handleSearchSubmit = (event) => {
     event.preventDefault()
@@ -68,11 +74,46 @@ export default function Navbar() {
               <Heart size={20} className="text-charcoal" />
             </button>
             {user ? (
-              <div className="flex items-center gap-3">
-                <Link to="/account" className="p-2 hover:bg-brown/5 rounded-lg transition-colors" aria-label="Account">
+              <div className="relative">
+                <button
+                  onClick={toggleAccountMenu}
+                  className="flex items-center gap-2 p-2 hover:bg-brown/5 rounded-lg transition-colors"
+                  aria-label="Account menu"
+                >
                   <User size={20} className="text-charcoal" />
-                </Link>
-                <button onClick={logout} className="text-sm text-charcoal hover:text-brown">Log out</button>
+                  <ChevronDown size={16} className="text-charcoal" />
+                </button>
+                {isAccountOpen && (
+                  <div className="absolute right-0 mt-2 w-52 rounded-3xl border border-brown/10 bg-white shadow-xl overflow-hidden">
+                    <Link
+                      to="/account"
+                      onClick={() => setIsAccountOpen(false)}
+                      className="block px-4 py-3 text-sm text-charcoal hover:bg-cream transition-colors"
+                    >
+                      My Account
+                    </Link>
+                    <Link
+                      to="/account#settings"
+                      onClick={() => setIsAccountOpen(false)}
+                      className="block px-4 py-3 text-sm text-charcoal hover:bg-cream transition-colors"
+                    >
+                      Account Settings
+                    </Link>
+                    <Link
+                      to="/wishlist"
+                      onClick={() => setIsAccountOpen(false)}
+                      className="block px-4 py-3 text-sm text-charcoal hover:bg-cream transition-colors"
+                    >
+                      Wishlist
+                    </Link>
+                    <button
+                      onClick={() => { logout(); setIsAccountOpen(false) }}
+                      className="w-full text-left px-4 py-3 text-sm text-charcoal hover:bg-cream transition-colors"
+                    >
+                      Log out
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="flex items-center gap-3">
@@ -86,14 +127,23 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={toggleMenu}
-            className="md:hidden p-2 hover:bg-brown/5 rounded-lg transition-colors"
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile Search + Menu Buttons */}
+          <div className="flex items-center gap-2 md:hidden">
+            <button
+              onClick={openSearchModal}
+              className="p-2 hover:bg-brown/5 rounded-lg transition-colors"
+              aria-label="Open search"
+            >
+              <Search size={24} className="text-charcoal" />
+            </button>
+            <button
+              onClick={toggleMenu}
+              className="p-2 hover:bg-brown/5 rounded-lg transition-colors"
+              aria-label="Toggle menu"
+            >
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
         {isSearchOpen && (
@@ -113,6 +163,37 @@ export default function Navbar() {
           </form>
         )}
 
+        {isSearchOpen && (
+          <div className="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/40 md:hidden">
+            <div className="w-full max-w-md rounded-[2rem] bg-white p-6 shadow-2xl">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold text-brown">Search</h2>
+                <button
+                  onClick={() => setIsSearchOpen(false)}
+                  className="p-2 rounded-full hover:bg-brown/5 transition-colors"
+                  aria-label="Close search"
+                >
+                  <X size={20} className="text-charcoal" />
+                </button>
+              </div>
+              <form onSubmit={handleSearchSubmit} className="space-y-4">
+                <input
+                  value={searchTerm}
+                  onChange={(event) => setSearchTerm(event.target.value)}
+                  placeholder="Search products, gift sets, FAQs..."
+                  className="w-full rounded-full border border-brown/20 bg-cream px-4 py-3 text-sm text-charcoal focus:outline-none focus:border-brown"
+                />
+                <button
+                  type="submit"
+                  className="w-full rounded-full bg-brown px-5 py-3 text-sm text-white hover:bg-dark-brown transition-colors"
+                >
+                  Search
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
+
         {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="md:hidden pb-4 space-y-2 animate-fadeIn">
@@ -130,6 +211,7 @@ export default function Navbar() {
               {user ? (
                 <div className="space-y-2">
                   <Link to="/account" className="block text-charcoal">Account</Link>
+                  <Link to="/account#settings" className="block text-charcoal">Account Settings</Link>
                   <button onClick={() => { logout(); setIsMenuOpen(false) }} className="block text-left text-charcoal">Log out</button>
                 </div>
               ) : (
