@@ -1,28 +1,27 @@
 import { Link } from 'react-router-dom'
 import { Heart, ShoppingCart } from 'lucide-react'
-import { useAuth } from '../context/AuthContext'
+import { useCart } from '../context/CartContext'
+import { useWishlist } from '../context/WishlistContext'
 import PropTypes from 'prop-types'
 
 export default function ProductCard({ product }) {
-  const { wishlist, toggleWishlistItem } = useAuth()
-  const isWishlisted = wishlist.some((item) => item.id === product.id)
+  const { addToCart } = useCart()
+  const { toggleWishlistItem, isWishlisted } = useWishlist()
+  const wishlisted = isWishlisted(product.id)
+  const soldOut = product.stockQuantity <= 0
+  const lowStock = !soldOut && product.stockQuantity <= 5
 
-  const renderStars = (rating) => {
-    return (
-      <div className="flex gap-1 text-gold text-xs">
-        {[...Array(5)].map((_, i) => (
-          <span key={i}>
-            {i < Math.floor(rating) ? '★' : i < rating ? '★' : '☆'}
-          </span>
-        ))}
-      </div>
-    )
-  }
+  const renderStars = (rating) => (
+    <div className="flex gap-1 text-gold text-xs" aria-label={`Rating ${rating} out of 5`}>
+      {[...Array(5)].map((_, i) => (
+        <span key={i}>{i < Math.floor(rating) ? '★' : '☆'}</span>
+      ))}
+    </div>
+  )
 
   return (
-    <div className="card-hover rounded-lg overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow">
-      {/* Image Container */}
-      <div className="relative product-image-container aspect-square bg-cream overflow-hidden">
+    <div className="rounded-[2rem] overflow-hidden bg-white shadow-lg transition-shadow hover:shadow-xl">
+      <div className="relative aspect-square bg-cream overflow-hidden">
         <img
           src={product.image}
           alt={product.name}
@@ -30,55 +29,52 @@ export default function ProductCard({ product }) {
           loading="lazy"
           decoding="async"
         />
-        {product.badge && (
-          <div className="absolute top-3 left-3 bg-gold/20 text-brown px-2 py-1 rounded text-xs font-semibold">
-            {product.badge}
-          </div>
-        )}
+        <div className="absolute left-4 top-4 flex flex-col gap-2">
+          {soldOut ? (
+            <span className="rounded-full bg-rose/10 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-rose font-semibold">Sold Out</span>
+          ) : lowStock ? (
+            <span className="rounded-full bg-gold/10 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-gold font-semibold">Low Stock</span>
+          ) : null}
+          {product.badge && <span className="rounded-full bg-gold/10 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-gold font-semibold">{product.badge}</span>}
+        </div>
         <button
           onClick={() => toggleWishlistItem(product)}
-          className="absolute top-3 right-3 p-2 bg-white/90 rounded-full hover:bg-rose/20 transition-colors"
-          aria-label="Add to wishlist"
-          aria-pressed={isWishlisted}
+          className="absolute right-4 top-4 rounded-full bg-white/90 p-3 shadow-sm transition hover:bg-rose/10"
+          aria-label={wishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+          aria-pressed={wishlisted}
         >
-          <Heart
-            size={18}
-            className={isWishlisted ? 'fill-rose text-rose' : 'text-charcoal'}
-          />
+          <Heart size={18} className={wishlisted ? 'fill-rose text-rose' : 'text-charcoal'} />
         </button>
       </div>
 
-      {/* Product Info */}
-      <div className="p-4 space-y-3">
-        <Link to={`/product/${product.id}`}>
-          <h3 className="font-serif font-semibold text-brown text-sm hover:text-gold transition-colors line-clamp-2">
+      <div className="p-5 space-y-3">
+        <Link to={`/product/${product.id}`} className="block">
+          <h3 className="font-serif text-base font-semibold text-brown transition-colors hover:text-gold">
             {product.name}
           </h3>
         </Link>
+        <p className="text-xs text-charcoal/70 line-clamp-2">{product.description}</p>
 
-        <p className="text-xs text-charcoal/60 line-clamp-2">
-          {product.description}
-        </p>
-
-        {/* Rating */}
         {product.rating && (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between">
             {renderStars(product.rating)}
-            {product.reviews && <span className="text-xs text-charcoal/50">({product.reviews})</span>}
+            <span className="text-xs text-charcoal/60">{product.reviews} reviews</span>
           </div>
         )}
 
-        {/* Price */}
-        <div className="pt-2 border-t border-brown/10">
-          <div className="font-serif font-bold text-brown text-lg">
-            ${product.price}
+        <div className="flex items-center justify-between pt-3 border-t border-brown/10">
+          <div>
+            <p className="text-sm text-charcoal/70">Price</p>
+            <p className="font-serif text-xl font-bold text-brown">${product.price.toFixed(2)}</p>
           </div>
         </div>
 
-        {/* Add to Cart Button */}
-        <button className="w-full bg-brown hover:bg-dark-brown text-white py-2 rounded btn-hover transition-colors font-medium text-sm flex items-center justify-center gap-2">
-          <ShoppingCart size={16} />
-          Add to Cart
+        <button
+          disabled={soldOut}
+          onClick={(event) => addToCart(product, 1, event)}
+          className={`w-full rounded-full px-4 py-3 text-sm font-semibold text-white transition ${soldOut ? 'bg-slate-300 cursor-not-allowed' : 'bg-brown hover:bg-dark-brown'}`}
+        >
+          {soldOut ? 'Unavailable' : 'Add to Cart'}
         </button>
       </div>
     </div>
@@ -95,5 +91,6 @@ ProductCard.propTypes = {
     rating: PropTypes.number,
     reviews: PropTypes.number,
     badge: PropTypes.string,
+    stockQuantity: PropTypes.number,
   }).isRequired,
 }

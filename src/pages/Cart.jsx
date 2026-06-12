@@ -1,238 +1,157 @@
-import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Trash2, Plus, Minus, ArrowRight } from 'lucide-react'
-import { useAuth } from '../context/AuthContext'
+import { useCart } from '../context/CartContext'
+import { useWishlist } from '../context/WishlistContext'
 import ProductCard from '../components/ProductCard'
 import MobileNav from '../components/MobileNav'
 
 export default function Cart() {
-  const { wishlist } = useAuth()
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: 'Radiant Gold Serum',
-      size: '30ML / ARTISAN COLLECTION',
-      price: 185.00,
-      quantity: 1,
-      image: 'https://via.placeholder.com/120x120?text=Serum',
-    },
-    {
-      id: 2,
-      name: 'Botanical Cleansing Balm',
-      size: '100G / ESSENTIAL RITUAL',
-      price: 92.00,
-      quantity: 1,
-      image: 'https://via.placeholder.com/120x120?text=Balm',
-    },
-  ])
+  const { cartItems, removeFromCart, increaseQuantity, decreaseQuantity, calculateTotals } = useCart()
+  const { wishlist } = useWishlist()
+  const navigate = useNavigate()
+  const totals = calculateTotals()
 
-  const recommendedProducts = [
-    {
-      id: 10,
-      name: 'Ritual Sleep Mist',
-      description: 'Enchanting sleep mist',
-      price: 45,
-      image: 'https://via.placeholder.com/300x300?text=Sleep+Mist',
-      rating: 4.9,
-      reviews: 156,
-    },
-    {
-      id: 11,
-      name: 'Quartz Sculptor',
-      description: 'Sculpting tool',
-      price: 68,
-      image: 'https://via.placeholder.com/300x300?text=Quartz',
-      rating: 4.7,
-      reviews: 98,
-    },
-  ]
-
-  const updateQuantity = (id, quantity) => {
-    if (quantity < 1) return
-    setCartItems(cartItems.map(item =>
-      item.id === id ? { ...item, quantity } : item
-    ))
+  if (!cartItems.length) {
+    return (
+      <div className="pb-24">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+          <div className="mx-auto mb-8 max-w-2xl rounded-[2rem] border border-white/30 bg-white/90 p-12 shadow-2xl backdrop-blur-xl">
+            <div className="mb-6 h-40 w-40 mx-auto rounded-full bg-gradient-to-br from-gold/30 via-white/60 to-cream flex items-center justify-center shadow-inner">
+              <span className="text-4xl font-serif text-brown">♡</span>
+            </div>
+            <h1 className="text-4xl font-serif font-bold text-brown mb-4">Your cart awaits</h1>
+            <p className="text-sm text-charcoal/70 mb-8">Every luxury ritual begins with your favorite essentials. Add a product to continue.</p>
+            <button
+              onClick={() => navigate('/shop')}
+              className="inline-flex items-center gap-2 rounded-full bg-brown px-8 py-3 text-sm font-semibold text-white hover:bg-dark-brown transition-colors"
+            >
+              Continue shopping <ArrowRight size={18} />
+            </button>
+          </div>
+        </div>
+        <MobileNav />
+      </div>
+    )
   }
-
-  const removeItem = (id) => {
-    setCartItems(cartItems.filter(item => item.id !== id))
-  }
-
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0)
-  const shipping = 0
-  const tax = subtotal * 0.083
-  const total = subtotal + shipping + tax
 
   return (
-    <div className="pb-24 md:pb-0">
+    <div className="pb-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <h1 className="text-4xl font-serif font-bold text-brown mb-2">Your Cart</h1>
-        <p className="text-charcoal/70 mb-12">Refined rituals, carefully curated.</p>
-
-        {cartItems.length === 0 ? (
-          <div className="text-center py-16">
-            <p className="text-charcoal/70 mb-6">Your cart is empty</p>
-            <a href="/shop/skincare" className="inline-flex items-center gap-2 bg-brown text-white font-semibold py-3 px-8 rounded-lg btn-hover transition-colors">
-              Continue Shopping <ArrowRight size={20} />
-            </a>
+        <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h1 className="text-4xl font-serif font-bold text-brown">Your Cart</h1>
+            <p className="text-sm text-charcoal/70">Refined rituals, carefully curated.</p>
           </div>
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Cart Items */}
-            <div className="lg:col-span-2">
-              <div className="space-y-4">
-                {cartItems.map(item => (
-                  <div key={item.id} className="flex gap-4 p-4 bg-white rounded-lg border border-brown/10">
-                    {/* Product Image */}
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-24 h-24 rounded-lg object-cover"
-                    />
+          <button
+            onClick={() => navigate('/checkout')}
+            className="inline-flex items-center gap-2 rounded-full bg-gold px-6 py-3 text-sm font-semibold text-brown hover:bg-gold/90 transition-colors"
+          >
+            Proceed to checkout
+          </button>
+        </div>
 
-                    {/* Product Info */}
-                    <div className="flex-1">
-                      <h3 className="font-serif font-semibold text-brown mb-1">
-                        {item.name}
-                      </h3>
-                      <p className="text-xs text-charcoal/60 mb-3 uppercase">
-                        {item.size}
-                      </p>
-
-                      {/* Quantity Controls */}
-                      <div className="flex items-center gap-3">
-                        <div className="flex items-center border border-brown/20 rounded-lg">
-                          <button
-                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                            className="p-1 hover:bg-brown/5 transition-colors"
-                          >
-                            <Minus size={16} />
-                          </button>
-                          <span className="px-3 py-1 text-sm font-medium border-l border-r border-brown/10">
-                            {item.quantity}
-                          </span>
-                          <button
-                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                            className="p-1 hover:bg-brown/5 transition-colors"
-                          >
-                            <Plus size={16} />
-                          </button>
-                        </div>
-                        <button
-                          onClick={() => removeItem(item.id)}
-                          className="p-1 hover:text-rose text-charcoal/60 transition-colors"
-                          aria-label="Remove item"
-                        >
-                          <Trash2 size={18} />
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Price */}
-                    <div className="text-right">
-                      <div className="font-serif font-bold text-brown text-lg">
-                        ${(item.price * item.quantity).toFixed(2)}
-                      </div>
-                      <p className="text-xs text-charcoal/60">
-                        ${item.price.toFixed(2)} each
-                      </p>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 space-y-4">
+            {cartItems.map((item) => (
+              <div key={item.id} className="rounded-[2rem] border border-white/30 bg-white/90 p-6 shadow-xl backdrop-blur-xl">
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                  <div className="flex items-center gap-4">
+                    <img src={item.image} alt={item.name} className="h-24 w-24 rounded-3xl object-cover" loading="lazy" />
+                    <div>
+                      <p className="font-semibold text-charcoal">{item.name}</p>
+                      <p className="text-sm text-charcoal/60">{item.category}</p>
+                      {item.soldOut && <span className="mt-2 inline-flex rounded-full bg-rose/10 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-rose">Sold Out</span>}
+                      {!item.soldOut && item.stockQuantity <= 5 && (
+                        <span className="mt-2 inline-flex rounded-full bg-gold/10 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-gold">Low Stock</span>
+                      )}
                     </div>
                   </div>
-                ))}
-              </div>
 
-              {/* Shipping Notice */}
-              <div className="mt-6 p-4 bg-gold/10 border-l-4 border-gold rounded-lg">
-                <p className="text-sm text-brown font-semibold mb-1">✓ Complimentary Express Shipping</p>
-                <p className="text-xs text-charcoal/70">Estimated arrival: Oct 12 - Oct 14</p>
-              </div>
-            </div>
-
-            {/* Order Summary */}
-            <div className="lg:col-span-1">
-              <div className="bg-white p-6 rounded-lg border border-brown/10 sticky top-24">
-                <h3 className="font-serif font-bold text-brown text-lg mb-4">Order Summary</h3>
-
-                <div className="space-y-3 mb-6 pb-6 border-b border-brown/10">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-charcoal/70">Subtotal</span>
-                    <span className="font-medium text-charcoal">${subtotal.toFixed(2)}</span>
+                  <div className="flex flex-col gap-4 sm:items-end">
+                    <div className="flex items-center gap-2 rounded-full border border-brown/10 bg-cream px-3 py-2 text-sm text-charcoal">
+                      <button
+                        type="button"
+                        onClick={() => decreaseQuantity(item.id)}
+                        className="rounded-full p-1 hover:bg-brown/10 transition-colors"
+                        aria-label="Decrease quantity"
+                      >
+                        <Minus size={16} />
+                      </button>
+                      <span className="min-w-[2rem] text-center font-medium">{item.quantity}</span>
+                      <button
+                        type="button"
+                        onClick={() => increaseQuantity(item.id)}
+                        className="rounded-full p-1 hover:bg-brown/10 transition-colors"
+                        aria-label="Increase quantity"
+                      >
+                        <Plus size={16} />
+                      </button>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => removeFromCart(item.id)}
+                      className="inline-flex items-center gap-2 rounded-full border border-rose/30 bg-rose/10 px-4 py-2 text-xs font-semibold text-rose transition hover:bg-rose/20"
+                    >
+                      <Trash2 size={16} /> Remove
+                    </button>
                   </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-charcoal/70">Shipping</span>
-                    <span className="font-medium text-gold">FREE</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-charcoal/70">VAX Included</span>
-                    <span className="font-medium text-charcoal">${tax.toFixed(2)}</span>
-                  </div>
                 </div>
 
-                <div className="flex justify-between items-center mb-6">
-                  <span className="font-serif text-lg text-brown">Total</span>
-                  <span className="font-serif font-bold text-2xl text-brown">
-                    ${total.toFixed(2)}
-                  </span>
+                <div className="mt-4 flex items-center justify-between gap-4 text-sm text-charcoal/70">
+                  <span>Price per item</span>
+                  <span>${item.price.toFixed(2)}</span>
                 </div>
-
-                <button className="w-full bg-gold hover:bg-gold/90 text-brown font-bold py-3 rounded-lg btn-hover transition-colors mb-3 uppercase text-sm">
-                  Proceed to Checkout
-                </button>
-
-                <p className="text-xs text-charcoal/60 text-center">
-                  Secure transaction encrypted via V&C Guard.
-                </p>
-              </div>
-
-              {/* Trust Indicators */}
-              <div className="mt-6 space-y-3">
-                <div className="flex items-center gap-2 text-xs text-charcoal/70">
-                  <span>✓</span>
-                  <span>Secure checkout</span>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-charcoal/70">
-                  <span>✓</span>
-                  <span>30-day returns</span>
-                </div>
-                <div className="flex items-center gap-2 text-xs text-charcoal/70">
-                  <span>✓</span>
-                  <span>Satisfaction guaranteed</span>
+                <div className="mt-2 flex items-center justify-between gap-4 text-base font-semibold text-charcoal">
+                  <span>Total</span>
+                  <span>${(item.price * item.quantity).toFixed(2)}</span>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
-        )}
 
-        {/* Saved for Later / Wishlist Section */}
-        {cartItems.length > 0 && (
+          <aside className="space-y-6">
+            <div className="rounded-[2rem] border border-white/30 bg-white/90 p-6 shadow-xl backdrop-blur-xl">
+              <h2 className="text-xl font-semibold text-brown mb-4">Order Summary</h2>
+              <div className="space-y-3 text-sm text-charcoal/70">
+                <div className="flex justify-between">
+                  <span>Subtotal</span>
+                  <span>${totals.subtotal.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Delivery</span>
+                  <span>${totals.deliveryFee.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between text-base font-semibold text-charcoal">
+                  <span>Total</span>
+                  <span>${totals.total.toFixed(2)}</span>
+                </div>
+              </div>
+              <button
+                onClick={() => navigate('/checkout')}
+                className="mt-6 w-full rounded-full bg-brown px-5 py-3 text-sm font-semibold text-white hover:bg-dark-brown transition-colors"
+              >
+                Checkout now
+              </button>
+            </div>
+
+            <div className="rounded-[2rem] border border-white/30 bg-cream/90 p-6 shadow-xl backdrop-blur-xl text-sm text-charcoal/70">
+              <p className="font-semibold text-brown mb-3">Shipping details</p>
+              <p>Complimentary express delivery and premium packaging are included with your order.</p>
+            </div>
+          </aside>
+        </div>
+
+        {wishlist.length > 0 && (
           <section className="mt-16">
-            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-8">
+            <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
               <div>
                 <h2 className="text-2xl font-serif font-bold text-brown">Saved for Later</h2>
-                <p className="text-sm text-charcoal/70">Wishlist items appear here before your ritual recommendations.</p>
+                <p className="text-sm text-charcoal/70">Wishlist items you may want to add before checkout.</p>
               </div>
-              <span className="text-sm text-charcoal/70">{wishlist.length} saved item{wishlist.length === 1 ? '' : 's'}</span>
+              <span className="text-sm text-charcoal/70">{wishlist.length} items saved</span>
             </div>
-
-            {wishlist.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {wishlist.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
-            ) : (
-              <div className="rounded-3xl border border-brown/10 bg-cream p-6 text-sm text-charcoal/70">
-                Your wishlist is empty. Save items from the shop to view them here before the ritual recommendations.
-              </div>
-            )}
-          </section>
-        )}
-
-        {/* Complete the Ritual Section */}
-        {cartItems.length > 0 && (
-          <section className="mt-16">
-            <h2 className="text-2xl font-serif font-bold text-brown mb-8">Complete the Ritual</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {recommendedProducts.map(product => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {wishlist.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
