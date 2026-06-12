@@ -85,8 +85,6 @@ export default function AdminLayout() {
           </div>
         </div>
       </main>
-
-      <MobileNav />
     </div>
   );
 }

@@ -5,6 +5,7 @@ import Footer from './components/Footer'
 import ErrorBoundary from './components/ErrorBoundary'
 import SkeletonLoader from './components/SkeletonLoader'
 import FloatingAssistant from './components/FloatingAssistant'
+import MobileNav from './context/MobileNav'
 import { AuthProvider } from './context/AuthContext'
 import { CartProvider } from './context/CartContext'
 import { WishlistProvider } from './context/WishlistContext'
@@ -93,6 +94,7 @@ export default function App() {
                     </Suspense>
                   </main>
                   <Footer />
+                  <MobileNav />
                 </div>
               </ErrorBoundary>
             </Router>

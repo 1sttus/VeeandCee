@@ -3,7 +3,6 @@ import { ArrowRight, Sparkles } from 'lucide-react'
 import HeroSection from '../components/HeroSection'
 import ProductCard from '../components/ProductCard'
 import TestimonialCard from '../components/TestimonialCard'
-import MobileNav from '../components/MobileNav'
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState('all')
@@ -198,9 +197,6 @@ export default function Home() {
           </button>
         </div>
       </section>
-
-      {/* Mobile Navigation */}
-      <MobileNav />
     </div>
   )
 }

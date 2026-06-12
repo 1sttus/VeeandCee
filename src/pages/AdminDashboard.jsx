@@ -110,7 +110,7 @@ const emptyProductForm = {
   category: 'Makeup',
   price: 0,
   discount: 0,
-  quantity: 0,
+  stockQuantity: 0,
   sold: 0,
   featured: false,
   visible: true,
@@ -579,9 +579,9 @@ export default function AdminDashboard() {
                 Quantity
                 <input
                   type="number"
-                  value={formData.quantity}
+                  value={formData.stockQuantity}
                   min="0"
-                  onChange={(event) => setFormData({ ...formData, quantity: Number(event.target.value) })}
+                  onChange={(event) => setFormData({ ...formData, stockQuantity: Number(event.target.value) })}
                   className="w-full rounded-3xl border border-brown/20 bg-cream px-4 py-3 text-sm outline-none focus:border-brown"
                 />
               </label>

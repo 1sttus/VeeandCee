@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import CategoryFilter from '../components/CategoryFilter'
 import ProductCard from '../components/ProductCard'
-import MobileNav from '../components/MobileNav'
 import products from '../data/products'
 
 const categoryLabels = {
@@ -197,8 +196,6 @@ export default function ProductCatalog() {
           </div>
         </div>
       </div>
-
-      <MobileNav />
     </div>
   )
 }
