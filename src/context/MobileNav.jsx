@@ -4,7 +4,7 @@ import { useCart } from '../context/CartContext'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function MobileNav() {
-  const { cartCount } = useCart()
+  const { cartCount, cartPulse } = useCart()
   const location = useLocation()
 
   const navItems = [
@@ -29,7 +29,7 @@ export default function MobileNav() {
                 {item.badge > 0 && (
                   <motion.span
                     initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
+                    animate={{ scale: (item.label === 'Cart' && cartPulse) ? 1.3 : 1 }}
                     exit={{ scale: 0 }}
                     className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-gold text-[10px] font-bold text-white shadow-sm"
                   >

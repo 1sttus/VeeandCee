@@ -18,6 +18,7 @@ export default function Home() {
       rating: 4.9,
       reviews: 208,
       badge: 'Best Seller',
+      stockQuantity: 14,
     },
     {
       id: 2,
@@ -27,6 +28,7 @@ export default function Home() {
       image: 'https://images.unsplash.com/photo-1586776977607-310e9c725c37?auto=format&fit=crop&w=900&q=80',
       rating: 4.8,
       reviews: 134,
+      stockQuantity: 25,
     },
     {
       id: 3,
@@ -36,6 +38,27 @@ export default function Home() {
       image: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=900&q=80',
       rating: 4.7,
       reviews: 97,
+      stockQuantity: 10,
+    },
+    {
+      id: 7,
+      name: 'Moonlit Night Serum',
+      description: 'Overnight recovery with botanical retinol',
+      price: 84,
+      image: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=900&q=80',
+      rating: 4.9,
+      reviews: 120,
+      stockQuantity: 15,
+    },
+    {
+      id: 8,
+      name: 'Satin Silk Eye Mask',
+      description: 'Pure silk for ultimate beauty rest',
+      price: 25,
+      image: 'https://images.unsplash.com/photo-1583002271842-870024976451?auto=format&fit=crop&w=900&q=80',
+      rating: 5.0,
+      reviews: 210,
+      stockQuantity: 0,
     },
   ]
 

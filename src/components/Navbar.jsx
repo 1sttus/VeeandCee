@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Menu, X, Search, Heart, ShoppingBag, User, ChevronDown } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
+import { useCart } from '../context/CartContext'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -9,6 +11,7 @@ export default function Navbar() {
   const [isAccountOpen, setIsAccountOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const { user, logout } = useAuth()
+  const { cartCount, cartPulse } = useCart()
   const navigate = useNavigate()
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
@@ -128,7 +131,18 @@ export default function Navbar() {
             )}
             <Link to="/cart" className="p-2 hover:bg-brown/5 rounded-lg transition-colors relative" aria-label="Cart">
               <ShoppingBag size={20} className="text-charcoal" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-gold rounded-full"></span>
+              <AnimatePresence>
+                {cartCount > 0 && (
+                  <motion.span
+                    initial={{ scale: 0 }}
+                    animate={{ scale: cartPulse ? 1.2 : 1 }}
+                    exit={{ scale: 0 }}
+                    className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-gold text-[10px] font-bold text-white shadow-sm"
+                  >
+                    {cartCount}
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </Link>
           </div>
 
