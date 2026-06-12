@@ -1,69 +1,59 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useState, useEffect } from 'react'
 
 const WISHLIST_KEY = 'veeandcee_wishlist'
-const RECENTLY_VIEWED_KEY = 'veeandcee_recently_viewed'
+const RECENT_KEY = 'veeandcee_recently_viewed'
 
 const WishlistContext = createContext(null)
 
-function getLocalStorage(key, fallback) {
-  try {
-    return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback))
-  } catch {
-    return fallback
-  }
-}
-
 export function WishlistProvider({ children }) {
-  const [wishlist, setWishlist] = useState(() => getLocalStorage(WISHLIST_KEY, []))
-  const [recentlyViewed, setRecentlyViewed] = useState(() => getLocalStorage(RECENTLY_VIEWED_KEY, []))
+  const [wishlist, setWishlist] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem(WISHLIST_KEY) || '[]')
+    } catch { return [] }
+  })
+
+  const [recentlyViewed, setRecentlyViewed] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem(RECENT_KEY) || '[]')
+    } catch { return [] }
+  })
 
   useEffect(() => {
     localStorage.setItem(WISHLIST_KEY, JSON.stringify(wishlist))
   }, [wishlist])
 
   useEffect(() => {
-    localStorage.setItem(RECENTLY_VIEWED_KEY, JSON.stringify(recentlyViewed))
+    localStorage.setItem(RECENT_KEY, JSON.stringify(recentlyViewed))
   }, [recentlyViewed])
 
-  const addToWishlist = (product) => {
-    setWishlist((current) => {
-      if (current.some((item) => item.id === product.id)) return current
-      return [...current, product]
-    })
-  }
-
-  const removeFromWishlist = (id) => {
-    setWishlist((current) => current.filter((item) => item.id !== id))
-  }
-
   const toggleWishlistItem = (product) => {
-    setWishlist((current) => {
-      if (current.some((item) => item.id === product.id)) {
-        return current.filter((item) => item.id !== product.id)
-      }
-      return [...current, product]
+    setWishlist((prev) => {
+      const exists = prev.find((item) => item.id === product.id)
+      if (exists) return prev.filter((item) => item.id !== product.id)
+      return [...prev, product]
     })
   }
 
   const isWishlisted = (id) => wishlist.some((item) => item.id === id)
 
   const trackProductView = (product) => {
-    if (!product || !product.id) return
-    setRecentlyViewed((current) => {
-      const updated = [product, ...current.filter((item) => item.id !== product.id)]
-      return updated.slice(0, 10)
+    setRecentlyViewed((prev) => {
+      const filtered = prev.filter((item) => item.id !== product.id)
+      return [product, ...filtered].slice(0, 10)
     })
   }
 
   return (
-    <WishlistContext.Provider value={{ wishlist, addToWishlist, removeFromWishlist, toggleWishlistItem, isWishlisted, recentlyViewed, trackProductView }}>
+    <WishlistContext.Provider value={{ wishlist, toggleWishlistItem, isWishlisted, recentlyViewed, trackProductView }}>
       {children}
     </WishlistContext.Provider>
   )
 }
 
 export function useWishlist() {
-  return useContext(WishlistContext)
+  const context = useContext(WishlistContext)
+  if (!context) throw new Error('useWishlist must be used within WishlistProvider')
+  return context
 }
 
 export default WishlistContext

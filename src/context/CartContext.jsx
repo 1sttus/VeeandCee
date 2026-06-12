@@ -21,11 +21,10 @@ function normalizeProduct(product) {
     stockQuantity: Number(product.stockQuantity ?? 0),
     quantitySold: Number(product.quantitySold ?? 0),
     featured: Boolean(product.featured),
-    soldOut: Boolean(product.soldOut ?? product.stockQuantity <= 0),
+    soldOut: Number(product.stockQuantity ?? 0) <= 0,
     createdAt: product.createdAt || new Date().toISOString(),
-    updatedAt: product.updatedAt || new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   }
-  normalized.soldOut = normalized.stockQuantity <= 0
   return normalized
 }
 

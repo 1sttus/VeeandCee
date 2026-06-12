@@ -1,73 +1,58 @@
-import { Link } from 'react-router-dom'
+import { useMemo } from 'react'
+import { useCart } from '../context/CartContext'
 import products from '../data/products'
-import MobileNav from '../components/MobileNav'
 
 export default function Compare() {
-  const baseline = products[0]
-  const comparison = products.find((item) => item.id === 4) || products[1]
+  const { addToCart } = useCart()
+  // In a real app, IDs would come from URL query params or state
+  const compareIds = [1, 2, 3] 
+  const compareItems = useMemo(() => products.filter(p => compareIds.includes(p.id)), [])
 
-  const attributes = [
-    { label: 'Price', a: `$${baseline.price.toFixed(2)}`, b: `$${comparison.price.toFixed(2)}` },
-    { label: 'Rating', a: `${baseline.rating} / 5`, b: `${comparison.rating} / 5` },
-    { label: 'Benefits', a: baseline.benefits?.join(', ') || baseline.description, b: comparison.benefits?.join(', ') || comparison.description },
-    { label: 'Ingredients', a: baseline.ingredients?.join(', ') || 'Premium botanicals', b: comparison.ingredients?.join(', ') || 'Nourishing extracts' },
-    { label: 'Stock status', a: baseline.soldOut ? 'Sold out' : baseline.stockQuantity <= 5 ? 'Low stock' : 'In stock', b: comparison.soldOut ? 'Sold out' : comparison.stockQuantity <= 5 ? 'Low stock' : 'In stock' },
+  const rows = [
+    { label: 'Price', key: 'price', format: (v) => `$${v.toFixed(2)}` },
+    { label: 'Category', key: 'category' },
+    { label: 'Rating', key: 'rating', format: (v) => `${v} / 5` },
+    { label: 'Benefits', key: 'benefits', format: (v) => v?.join(', ') || 'Natural hydration' },
+    { label: 'Ingredients', key: 'ingredients', format: (v) => v?.slice(0, 3).join(', ') + '...' },
   ]
 
   return (
-    <div className="pb-24 md:pb-0 overflow-x-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="mb-10">
-          <p className="text-xs uppercase tracking-[0.3em] text-charcoal/50">Product Comparison</p>
-          <h1 className="text-4xl font-serif font-bold text-brown mt-3">Compare your ritual favorites</h1>
-          <p className="text-sm text-charcoal/70 mt-3">Side-by-side details, pricing, and ingredients to choose the perfect luxury formula.</p>
-        </div>
-
-        <div className="grid gap-6 lg:grid-cols-[1fr_1fr] mb-10">
-          {[baseline, comparison].map((product) => (
-            <div key={product.id} className="rounded-[2rem] border border-white/30 bg-white/90 p-6 shadow-xl backdrop-blur-xl">
-              <img src={product.image} alt={product.name} className="h-64 w-full rounded-[2rem] object-cover mb-5" loading="lazy" />
-              <div className="space-y-3">
-                <p className="text-xs uppercase tracking-[0.3em] text-charcoal/50">{product.category}</p>
-                <h2 className="text-2xl font-serif font-bold text-brown">{product.name}</h2>
-                <p className="text-sm text-charcoal/70">{product.description}</p>
-                <div className="flex flex-wrap gap-3 mt-4">
-                  <span className="rounded-full bg-gold/10 px-3 py-2 text-xs font-semibold text-brown">{product.soldOut ? 'Sold out' : 'In stock'}</span>
-                  {product.stockQuantity <= 5 && !product.soldOut && <span className="rounded-full bg-rose/10 px-3 py-2 text-xs font-semibold text-rose">Low stock</span>}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="rounded-[2rem] border border-white/30 bg-cream/90 p-6 shadow-xl backdrop-blur-xl overflow-x-auto">
-          <table className="min-w-full text-left text-sm text-charcoal">
-            <thead>
-              <tr className="border-b border-brown/10">
-                <th className="py-4 px-4 text-xs uppercase tracking-[0.3em] text-charcoal/60">Feature</th>
-                <th className="py-4 px-4 text-xs uppercase tracking-[0.3em] text-charcoal/60">{baseline.name}</th>
-                <th className="py-4 px-4 text-xs uppercase tracking-[0.3em] text-charcoal/60">{comparison.name}</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-brown/10">
-              {attributes.map((row) => (
-                <tr key={row.label} className="bg-white/80">
-                  <td className="px-4 py-5 font-semibold text-charcoal">{row.label}</td>
-                  <td className="px-4 py-5 text-charcoal/70">{row.a}</td>
-                  <td className="px-4 py-5 text-charcoal/70">{row.b}</td>
-                </tr>
+    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <h1 className="mb-10 font-serif text-4xl font-bold text-brown">Product Comparison</h1>
+      
+      <div className="overflow-x-auto rounded-[2rem] border border-brown/10 bg-white shadow-xl">
+        <table className="w-full text-left">
+          <thead>
+            <tr className="border-b border-brown/5">
+              <th className="min-w-[200px] p-8 text-sm uppercase tracking-widest text-charcoal/50">Feature</th>
+              {compareItems.map(item => (
+                <th key={item.id} className="min-w-[250px] p-8">
+                  <img src={item.image} alt={item.name} className="mb-4 h-32 w-32 rounded-2xl object-cover" />
+                  <h3 className="font-serif text-xl font-bold text-brown">{item.name}</h3>
+                  <button 
+                    onClick={() => addToCart(item)}
+                    className="mt-4 rounded-full bg-brown px-4 py-2 text-xs font-semibold text-white hover:bg-dark-brown"
+                  >
+                    Add to Cart
+                  </button>
+                </th>
               ))}
-            </tbody>
-          </table>
-        </div>
-
-        <div className="mt-10 text-center">
-          <Link to="/shop" className="inline-flex items-center justify-center rounded-full bg-brown px-8 py-3 text-sm font-semibold text-white hover:bg-dark-brown transition-colors">
-            Explore other products
-          </Link>
-        </div>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-brown/5">
+            {rows.map(row => (
+              <tr key={row.label} className="hover:bg-cream/30">
+                <td className="p-8 text-sm font-semibold text-brown bg-cream/20">{row.label}</td>
+                {compareItems.map(item => (
+                  <td key={item.id} className="p-8 text-sm text-charcoal/80">
+                    {row.format ? row.format(item[row.key]) : item[row.key]}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
-      <MobileNav />
     </div>
   )
 }

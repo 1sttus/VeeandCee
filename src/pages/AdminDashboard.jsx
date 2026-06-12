@@ -132,11 +132,11 @@ export default function AdminDashboard() {
   const totalOrders = orders.length
   const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0)
   const totalCustomers = customers.length
-  const lowStockCount = products.filter((product) => product.quantity > 0 && product.quantity <= 5).length
-  const soldOutCount = products.filter((product) => product.quantity === 0).length
+  const lowStockCount = products.filter((product) => product.stockQuantity > 0 && product.stockQuantity <= 5).length
+  const soldOutCount = products.filter((product) => product.stockQuantity <= 0).length
 
   const inventoryData = [
-    { label: 'Available', value: products.reduce((sum, product) => sum + product.quantity, 0) },
+    { label: 'Available', value: products.reduce((sum, product) => sum + product.stockQuantity, 0) },
     { label: 'Sold', value: products.reduce((sum, product) => sum + product.sold, 0) },
     { label: 'Low Stock', value: lowStockCount },
     { label: 'Sold Out', value: soldOutCount },
@@ -335,10 +335,10 @@ export default function AdminDashboard() {
                     <td className="px-6 py-4">{product.category}</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
-                        <span>{product.quantity}</span>
-                        {product.quantity === 0 ? (
+                        <span>{product.stockQuantity}</span>
+                        {product.stockQuantity <= 0 ? (
                           <span className="rounded-full bg-rose/10 px-2 py-1 text-[10px] uppercase tracking-[0.2em] text-rose">Sold Out</span>
-                        ) : product.quantity <= 5 ? (
+                        ) : product.stockQuantity <= 5 ? (
                           <span className="rounded-full bg-gold/10 px-2 py-1 text-[10px] uppercase tracking-[0.2em] text-gold">Low</span>
                         ) : null}
                       </div>
