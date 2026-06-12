@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import { Camera, Bookmark, Music2 } from 'lucide-react'
 
 export default function Footer() {

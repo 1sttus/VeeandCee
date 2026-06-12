@@ -3,7 +3,13 @@ module.exports = {
     browser: true,
     es2021: true,
     node: true,
-    'vitest/globals': true,
+  },
+  globals: {
+    describe: 'readonly',
+    it: 'readonly',
+    expect: 'readonly',
+    beforeEach: 'readonly',
+    afterEach: 'readonly',
   },
   extends: [
     'eslint:recommended',
@@ -30,4 +36,7 @@ module.exports = {
     'react/no-unescaped-entities': 'off',
     'no-unused-vars': ['error', { 'argsIgnorePattern': '^_', 'varsIgnorePattern': '^_' }],
   },
+
+  plugins: ['vitest'],
 }
+

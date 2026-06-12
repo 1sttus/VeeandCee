@@ -1,6 +1,22 @@
 import { useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 
+const FilterSection = ({ title, section, expanded, onToggle, children }) => (
+  <div className="mb-6">
+    <button
+      onClick={() => onToggle(section)}
+      className="w-full flex items-center justify-between mb-3 pb-2 border-b border-brown/10 hover:text-brown transition-colors"
+    >
+      <h3 className="font-serif font-semibold text-brown text-sm uppercase">{title}</h3>
+      <ChevronDown
+        size={18}
+        className={`transition-transform ${expanded ? '' : '-rotate-90'}`}
+      />
+    </button>
+    {expanded && <div className="space-y-3">{children}</div>}
+  </div>
+)
+
 export default function CategoryFilter({ onFilterChange }) {
   const [expandedSections, setExpandedSections] = useState({
     category: true,
@@ -30,26 +46,15 @@ export default function CategoryFilter({ onFilterChange }) {
     }))
   }
 
-  const FilterSection = ({ title, section, children }) => (
-    <div className="mb-6">
-      <button
-        onClick={() => toggleSection(section)}
-        className="w-full flex items-center justify-between mb-3 pb-2 border-b border-brown/10 hover:text-brown transition-colors"
-      >
-        <h3 className="font-serif font-semibold text-brown text-sm uppercase">{title}</h3>
-        <ChevronDown
-          size={18}
-          className={`transition-transform ${expandedSections[section] ? '' : '-rotate-90'}`}
-        />
-      </button>
-      {expandedSections[section] && <div className="space-y-3">{children}</div>}
-    </div>
-  )
-
   return (
     <aside className="hidden lg:block w-48 pr-6 space-y-8">
       {/* Category Filter */}
-      <FilterSection title="Category" section="category">
+      <FilterSection
+        title="Category"
+        section="category"
+        expanded={expandedSections.category}
+        onToggle={toggleSection}
+      >
         {categories.map(cat => (
           <label key={cat.id} className="flex items-center gap-2 cursor-pointer">
             <input
@@ -65,7 +70,12 @@ export default function CategoryFilter({ onFilterChange }) {
       </FilterSection>
 
       {/* Concern Filter */}
-      <FilterSection title="Concern" section="concern">
+      <FilterSection
+        title="Concern"
+        section="concern"
+        expanded={expandedSections.concern}
+        onToggle={toggleSection}
+      >
         {concerns.map(concern => (
           <label key={concern.id} className="flex items-center gap-2 cursor-pointer">
             <input
@@ -81,7 +91,12 @@ export default function CategoryFilter({ onFilterChange }) {
       </FilterSection>
 
       {/* Price Range */}
-      <FilterSection title="Price Range" section="priceRange">
+      <FilterSection
+        title="Price Range"
+        section="priceRange"
+        expanded={expandedSections.priceRange}
+        onToggle={toggleSection}
+      >
         <input
           type="range"
           min="0"
@@ -96,7 +111,12 @@ export default function CategoryFilter({ onFilterChange }) {
       </FilterSection>
 
       {/* Rating Filter */}
-      <FilterSection title="Rating" section="rating">
+      <FilterSection
+        title="Rating"
+        section="rating"
+        expanded={expandedSections.rating}
+        onToggle={toggleSection}
+      >
         {[5, 4, 3, 2, 1].map(rating => (
           <label key={rating} className="flex items-center gap-2 cursor-pointer">
             <input

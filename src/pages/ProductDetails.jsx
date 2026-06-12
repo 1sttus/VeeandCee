@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ShoppingCart, Heart, Share2, ChevronDown, TrendingUp } from 'lucide-react'
+import { ShoppingCart, Heart, Share2, ChevronDown } from 'lucide-react'
 import ReviewCard from '../components/ReviewCard'
 import ProductCard from '../components/ProductCard'
 import TestimonialCard from '../components/TestimonialCard'

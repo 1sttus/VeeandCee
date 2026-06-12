@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Trash2, Plus, Minus, ArrowRight, TrendingUp } from 'lucide-react'
+import { Trash2, Plus, Minus, ArrowRight } from 'lucide-react'
 import ProductCard from '../components/ProductCard'
 import MobileNav from '../components/MobileNav'
 

@@ -1,3 +1,5 @@
+import React from 'react'
+import { MemoryRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
 import ProductCard from '../ProductCard'
 
@@ -11,8 +13,12 @@ const sample = {
 
 describe('ProductCard', () => {
   it('renders product name and price', () => {
-    render(<ProductCard product={sample} />)
-    expect(screen.getByText(/Sample Product/i)).toBeInTheDocument()
-    expect(screen.getByText(/\$29.00/)).toBeInTheDocument()
+    render(
+      <MemoryRouter>
+        <ProductCard product={sample} />
+      </MemoryRouter>
+    )
+    expect(screen.getByRole('heading', { name: /Sample Product/i })).toBeInTheDocument()
+    expect(screen.getByText('$29.00')).toBeInTheDocument()
   })
 })
