@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { Trash2, Plus, Minus, ArrowRight } from 'lucide-react'
+import { useAuth } from '../context/AuthContext'
 import ProductCard from '../components/ProductCard'
 import MobileNav from '../components/MobileNav'
 
 export default function Cart() {
+  const { wishlist } = useAuth()
   const [cartItems, setCartItems] = useState([
     {
       id: 1,
@@ -198,6 +200,31 @@ export default function Cart() {
               </div>
             </div>
           </div>
+        )}
+
+        {/* Saved for Later / Wishlist Section */}
+        {cartItems.length > 0 && (
+          <section className="mt-16">
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-8">
+              <div>
+                <h2 className="text-2xl font-serif font-bold text-brown">Saved for Later</h2>
+                <p className="text-sm text-charcoal/70">Wishlist items appear here before your ritual recommendations.</p>
+              </div>
+              <span className="text-sm text-charcoal/70">{wishlist.length} saved item{wishlist.length === 1 ? '' : 's'}</span>
+            </div>
+
+            {wishlist.length > 0 ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {wishlist.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            ) : (
+              <div className="rounded-3xl border border-brown/10 bg-cream p-6 text-sm text-charcoal/70">
+                Your wishlist is empty. Save items from the shop to view them here before the ritual recommendations.
+              </div>
+            )}
+          </section>
         )}
 
         {/* Complete the Ritual Section */}
