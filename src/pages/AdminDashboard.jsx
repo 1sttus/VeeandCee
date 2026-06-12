@@ -15,7 +15,8 @@ const initialProducts = [
     category: 'Makeup',
     price: 68,
     discount: 15,
-    quantity: 14,
+    stockQuantity: 14,
+    image: 'https://images.unsplash.com/photo-1631730359585-38a4935ccbbd?auto=format&fit=crop&w=900&q=80',
     sold: 72,
     featured: true,
     visible: true,
@@ -27,7 +28,8 @@ const initialProducts = [
     category: 'Skincare',
     price: 32,
     discount: 0,
-    quantity: 8,
+    stockQuantity: 8,
+    image: 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=900&q=80',
     sold: 49,
     featured: false,
     visible: true,
@@ -39,7 +41,8 @@ const initialProducts = [
     category: 'Body',
     price: 48,
     discount: 10,
-    quantity: 4,
+    stockQuantity: 4,
+    image: 'https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=900&q=80',
     sold: 28,
     featured: false,
     visible: true,
@@ -51,7 +54,8 @@ const initialProducts = [
     category: 'Hair',
     price: 52,
     discount: 20,
-    quantity: 0,
+    stockQuantity: 0,
+    image: 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=900&q=80',
     sold: 56,
     featured: true,
     visible: false,
@@ -63,7 +67,8 @@ const initialProducts = [
     category: 'Fragrance',
     price: 98,
     discount: 5,
-    quantity: 22,
+    stockQuantity: 22,
+    image: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=900&q=80',
     sold: 88,
     featured: true,
     visible: true,
@@ -75,7 +80,8 @@ const initialProducts = [
     category: 'Gift Sets',
     price: 120,
     discount: 12,
-    quantity: 12,
+    stockQuantity: 12,
+    image: 'https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?auto=format&fit=crop&w=900&q=80',
     sold: 36,
     featured: false,
     visible: true,
@@ -219,7 +225,7 @@ export default function AdminDashboard() {
   }
 
   const restockProduct = (productId) => {
-    setProducts((current) => current.map((item) => (item.id === productId ? { ...item, quantity: Math.max(item.quantity, 10) } : item)))
+    setProducts((current) => current.map((item) => (item.id === productId ? { ...item, stockQuantity: Math.max(item.stockQuantity || 0, 10) } : item)))
   }
 
   const updateOrderStatus = (orderId, status) => {

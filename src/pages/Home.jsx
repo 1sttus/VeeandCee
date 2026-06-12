@@ -15,7 +15,7 @@ export default function Home() {
       name: 'Radiant Veil Foundation',
       description: 'Silky coverage with luminous finish',
       price: 68,
-      image: 'https://images.unsplash.com/photo-1517602302552-471fe67acf66?auto=format&fit=crop&w=900&q=80',
+      image: 'https://images.unsplash.com/photo-1625093742435-6fa192b6fb10?auto=format&fit=crop&w=900&q=80',
       rating: 4.9,
       reviews: 208,
       badge: 'Best Seller',
@@ -25,7 +25,7 @@ export default function Home() {
       name: 'Velvet Petal Lipstick',
       description: 'Creamy color with satin comfort',
       price: 42,
-      image: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=900&q=80',
+      image: 'https://images.unsplash.com/photo-1586776977607-310e9c725c37?auto=format&fit=crop&w=900&q=80',
       rating: 4.8,
       reviews: 134,
     },
@@ -34,7 +34,7 @@ export default function Home() {
       name: 'Twilight Eye Palette',
       description: 'Rich, blendable mineral shades',
       price: 78,
-      image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=900&q=80',
+      image: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=900&q=80',
       rating: 4.7,
       reviews: 97,
     },
@@ -49,31 +49,31 @@ export default function Home() {
 
   const testimonials = [
     {
-      image: 'https://images.unsplash.com/photo-1526045612212-70caf35c14df?auto=format&fit=crop&w=900&q=80',
+      image: 'https://images.unsplash.com/photo-1596462502278-27bfdc4033c8?auto=format&fit=crop&w=900&q=80',
       timeframe: 'Day 21',
       category: 'Before & After',
-      quote: 'My skin has never felt this plump. The radiance is completely gone.',
+      quote: 'My skin has never felt this plump. The transformation is undeniable.',
       author: 'Sarah J.',
     },
     {
-      image: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80',
+      image: 'https://images.unsplash.com/photo-1573461160327-b450ce3d8e7f?auto=format&fit=crop&w=900&q=80',
       timeframe: 'Day 30',
       category: 'Results',
       quote: 'Visible difference in my fine lines. This is now a staple in my routine.',
       author: 'Elena V.',
     },
     {
-      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=80',
+      image: 'https://images.unsplash.com/photo-1598454444233-9df315278494?auto=format&fit=crop&w=900&q=80',
       timeframe: 'Day 14',
       category: 'Transformation',
-      quote: 'The brightness is undeniable. I woke up looking refreshed.',
+      quote: 'The natural glow is undeniable. I finally feel confident in my own skin.',
       author: 'Marcus T.',
     },
   ]
 
   const journalArticles = [
     {
-      image: 'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=900&q=80',
+      image: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=900&q=80',
       title: 'The 5-Minute Morning Glow Ritual',
       excerpt: 'Master a skincare ritual that feels luxurious and effortless.',
       link: '#',
@@ -98,7 +98,7 @@ export default function Home() {
       <HeroSection
         title="The Art of Complexion"
         subtitle="Discover elevated essentials designed for luminous, natural beauty in every ritual."
-        backgroundImage="https://images.unsplash.com/photo-1517602302552-471fe67acf66?auto=format&fit=crop&w=1600&q=80"
+        backgroundImage="https://images.unsplash.com/photo-1559599101-f09722fb4948?auto=format&fit=crop&w=1600&q=80"
         ctaText="Explore Now"
         ctaLink="/shop/skincare"
       />

@@ -69,7 +69,7 @@ export default function ProductCatalog() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="space-y-8">
           <div className="rounded-[2rem] overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(201,169,97,0.12),transparent_35%)]">
-            <div className="relative h-[320px] sm:h-[420px] md:h-[480px] bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1517602302552-471fe67acf66?auto=format&fit=crop&w=1600&q=80')" }}>
+            <div className="relative h-[320px] sm:h-[420px] md:h-[480px] bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1591343395902-1adcb454c2e4?auto=format&fit=crop&w=1600&q=80')" }}>
               <div className="absolute inset-0 bg-black/20"></div>
               <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-6 sm:px-12">
                 <p className="uppercase tracking-[0.3em] text-xs text-white/70 mb-4">{sectionLabel}</p>
