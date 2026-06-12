@@ -9,8 +9,8 @@ export default function AdminLogin() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const ADMIN_EMAIL = "admin@veeandcee.com";
-  const ADMIN_PASSWORD = "VeeAndCee@2026";
+  const ADMIN_EMAIL = import.meta.env.VITE_ADMIN_EMAIL || "admin@veeandcee.com";
+  const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || "VeeAndCee@2026";
 
   const handleLogin = (e) => {
     e.preventDefault();

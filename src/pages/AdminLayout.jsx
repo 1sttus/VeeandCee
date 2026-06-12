@@ -14,7 +14,13 @@ const sidebarItems = [
 export default function AdminLayout() {
   const location = useLocation();
   const navigate = useNavigate();
-  const auth = JSON.parse(localStorage.getItem('adminAuth'));
+  let auth = null;
+  try {
+    auth = JSON.parse(localStorage.getItem('adminAuth'));
+  } catch (e) {
+    console.error("Failed to parse adminAuth from localStorage:", e);
+    // auth remains null, adminEmail will default
+  }
   const adminEmail = auth?.email || 'Admin User';
 
   const handleLogout = () => {
