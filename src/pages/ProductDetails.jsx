@@ -128,6 +128,8 @@ export default function ProductDetails() {
                 src={product.images[selectedImage]}
                 alt={product.name}
                 className="w-full h-full object-cover"
+                loading="lazy"
+                decoding="async"
               />
             </div>
             <div className="grid grid-cols-4 gap-3">
@@ -139,7 +141,13 @@ export default function ProductDetails() {
                     selectedImage === idx ? 'border-brown' : 'border-brown/10'
                   }`}
                 >
-                  <img src={img} alt="" className="w-full h-full object-cover" />
+                  <img
+                    src={img}
+                    alt={`Product alternate view ${idx + 1}`}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </button>
               ))}
             </div>
