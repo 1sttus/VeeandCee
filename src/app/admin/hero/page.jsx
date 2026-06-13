@@ -5,7 +5,6 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { uploadImage } from '@/lib/cloudinary';
 
 export default function HeroAdmin() {
   const [title, setTitle] = useState('');
@@ -19,7 +18,7 @@ export default function HeroAdmin() {
   // Load existing hero via API
   useEffect(() => {
     async function loadHero() {
-      const res = await fetch('/api/admin/hero');
+      const res = await fetch('/api/hero');
       if (res.ok) {
         const hero = await res.json();
         if (hero) {
@@ -46,11 +45,23 @@ export default function HeroAdmin() {
     e.preventDefault();
     let imageUrl = previewUrl;
     if (imageFile) {
-      const result = await uploadImage(imageFile, { folder: 'hero' });
-      imageUrl = result.secure_url;
+      const form = new FormData();
+      form.append('file', imageFile);
+      form.append('folder', 'hero');
+      const uploadRes = await fetch('/api/upload', {
+        method: 'POST',
+        body: form,
+      });
+      if (uploadRes.ok) {
+        const uploadData = await uploadRes.json();
+        imageUrl = uploadData.secure_url;
+      } else {
+        console.error('Upload failed');
+        return;
+      }
     }
     const payload = { title, subtitle, ctaText, ctaLink, imageUrl };
-    await fetch('/api/admin/hero', {
+    await fetch('/api/hero', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
