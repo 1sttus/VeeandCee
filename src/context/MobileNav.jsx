@@ -1,11 +1,14 @@
-import { Link, useLocation } from 'react-router-dom'
+'use client'
+
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { Home, ShoppingBag, Heart, User, LayoutGrid } from 'lucide-react'
 import { useCart } from '../context/CartContext'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function MobileNav() {
   const { cartCount, cartPulse } = useCart()
-  const location = useLocation()
+  const pathname = usePathname()
 
   const navItems = [
     { icon: Home, label: 'Home', path: '/' },
@@ -19,9 +22,9 @@ export default function MobileNav() {
     <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-brown/10 bg-white/80 pb-safe backdrop-blur-xl md:hidden">
       <div className="flex h-16 items-center justify-around px-2">
         {navItems.map((item) => {
-          const isActive = location.pathname === item.path
+          const isActive = pathname === item.path
           return (
-            <Link key={item.label} to={item.path} className="relative flex flex-col items-center gap-1 p-2">
+            <Link key={item.label} href={item.path} className="relative flex flex-col items-center gap-1 p-2">
               <item.icon size={20} className={isActive ? 'text-brown' : 'text-charcoal/60'} />
               <span className={`text-[10px] font-medium ${isActive ? 'text-brown' : 'text-charcoal/60'}`}>{item.label}</span>
               

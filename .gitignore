@@ -10,3 +10,4 @@ dist
 *.suo
 *.sln
 *.csproj
+.next

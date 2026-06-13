@@ -1,3 +1,5 @@
+'use client'
+
 import { createContext, useContext, useState, useEffect } from 'react'
 
 const WISHLIST_KEY = 'veeandcee_wishlist'
@@ -6,17 +8,20 @@ const RECENT_KEY = 'veeandcee_recently_viewed'
 const WishlistContext = createContext(null)
 
 export function WishlistProvider({ children }) {
-  const [wishlist, setWishlist] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem(WISHLIST_KEY) || '[]')
-    } catch { return [] }
-  })
+  const [wishlist, setWishlist] = useState([])
+  const [recentlyViewed, setRecentlyViewed] = useState([])
 
-  const [recentlyViewed, setRecentlyViewed] = useState(() => {
+  useEffect(() => {
     try {
-      return JSON.parse(localStorage.getItem(RECENT_KEY) || '[]')
-    } catch { return [] }
-  })
+      const savedWishlist = localStorage.getItem(WISHLIST_KEY)
+      if (savedWishlist) setWishlist(JSON.parse(savedWishlist))
+
+      const savedRecent = localStorage.getItem(RECENT_KEY)
+      if (savedRecent) setRecentlyViewed(JSON.parse(savedRecent))
+    } catch (e) {
+      console.error(e)
+    }
+  }, [])
 
   useEffect(() => {
     localStorage.setItem(WISHLIST_KEY, JSON.stringify(wishlist))
@@ -28,23 +33,25 @@ export function WishlistProvider({ children }) {
 
   const toggleWishlistItem = (product) => {
     setWishlist((prev) => {
-      const exists = prev.find((item) => item.id === product.id)
-      if (exists) return prev.filter((item) => item.id !== product.id)
+      const exists = prev.find((item) => item.id === product.id || item._id === product._id)
+      if (exists) return prev.filter((item) => item.id !== product.id && item._id !== product._id)
       return [...prev, product]
     })
   }
 
-  const isWishlisted = (id) => wishlist.some((item) => item.id === id)
+  const isWishlisted = (id) => wishlist.some((item) => item.id === id || item._id === id)
 
   const trackProductView = (product) => {
     setRecentlyViewed((prev) => {
-      const filtered = prev.filter((item) => item.id !== product.id)
+      const filtered = prev.filter((item) => item.id !== product.id && item._id !== product._id)
       return [product, ...filtered].slice(0, 10)
     })
   }
 
   return (
-    <WishlistContext.Provider value={{ wishlist, toggleWishlistItem, isWishlisted, recentlyViewed, trackProductView }}>
+    <WishlistContext.Provider
+      value={{ wishlist, toggleWishlistItem, isWishlisted, recentlyViewed, trackProductView }}
+    >
       {children}
     </WishlistContext.Provider>
   )

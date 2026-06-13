@@ -1,5 +1,7 @@
-import { Link } from 'react-router-dom'
-import { Heart, ShoppingCart } from 'lucide-react'
+'use client'
+
+import Link from 'next/link'
+import { Heart } from 'lucide-react'
 import { useCart } from '../context/CartContext'
 import { useWishlist } from '../context/WishlistContext'
 import PropTypes from 'prop-types'
@@ -7,14 +9,17 @@ import PropTypes from 'prop-types'
 export default function ProductCard({ product }) {
   const { addToCart } = useCart()
   const { toggleWishlistItem, isWishlisted } = useWishlist()
-  const wishlisted = isWishlisted(product.id)
-  const soldOut = product.stockQuantity <= 0
-  const lowStock = !soldOut && product.stockQuantity <= 5
+
+  const productId = product.id || product._id
+  const wishlisted = isWishlisted(productId)
+  const stockQuantity = product.stockQuantity ?? 15
+  const soldOut = stockQuantity <= 0
+  const lowStock = !soldOut && stockQuantity <= 5
 
   const renderStars = (rating) => (
     <div className="flex gap-1 text-gold text-xs" aria-label={`Rating ${rating} out of 5`}>
       {[...Array(5)].map((_, i) => (
-        <span key={i}>{i < Math.floor(rating) ? '★' : '☆'}</span>
+        <span key={i}>{i < Math.floor(rating || 5) ? '★' : '☆'}</span>
       ))}
     </div>
   )
@@ -48,7 +53,7 @@ export default function ProductCard({ product }) {
       </div>
 
       <div className="p-5 space-y-3">
-        <Link to={`/product/${product.id}`} className="block">
+        <Link href={`/product/${productId}`} className="block">
           <h3 className="font-serif text-base font-semibold text-brown transition-colors hover:text-gold">
             {product.name}
           </h3>
@@ -58,14 +63,14 @@ export default function ProductCard({ product }) {
         {product.rating && (
           <div className="flex items-center justify-between">
             {renderStars(product.rating)}
-            <span className="text-xs text-charcoal/60">{product.reviews} reviews</span>
+            <span className="text-xs text-charcoal/60">{product.reviews || 0} reviews</span>
           </div>
         )}
 
         <div className="flex items-center justify-between pt-3 border-t border-brown/10">
           <div>
             <p className="text-sm text-charcoal/70">Price</p>
-            <p className="font-serif text-xl font-bold text-brown">${product.price.toFixed(2)}</p>
+            <p className="font-serif text-xl font-bold text-brown">${Number(product.price || 0).toFixed(2)}</p>
           </div>
         </div>
 
@@ -83,7 +88,8 @@ export default function ProductCard({ product }) {
 
 ProductCard.propTypes = {
   product: PropTypes.shape({
-    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    _id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     name: PropTypes.string.isRequired,
     image: PropTypes.string,
     price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

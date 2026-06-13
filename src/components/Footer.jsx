@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { Camera, Bookmark, Music2 } from 'lucide-react'
 
 export default function Footer() {
@@ -44,9 +44,9 @@ export default function Footer() {
             <ul className="space-y-2">
               {footerLinks.shop.map((link) => (
                 <li key={link.label}>
-                  <a href={link.href} className="text-sm text-charcoal/70 hover:text-brown transition-colors">
+                  <Link href={link.href} className="text-sm text-charcoal/70 hover:text-brown transition-colors">
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -58,9 +58,9 @@ export default function Footer() {
             <ul className="space-y-2">
               {footerLinks.support.map((link) => (
                 <li key={link.label}>
-                  <a href={link.href} className="text-sm text-charcoal/70 hover:text-brown transition-colors">
+                  <Link href={link.href} className="text-sm text-charcoal/70 hover:text-brown transition-colors">
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

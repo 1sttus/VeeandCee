@@ -1,5 +1,5 @@
 import { ArrowRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 
 export default function HeroSection({ 
   title, 
@@ -31,7 +31,7 @@ export default function HeroSection({
             {subtitle}
           </p>
           <Link
-            to={ctaLink}
+            href={ctaLink}
             className="inline-flex items-center gap-2 bg-gold hover:bg-gold/90 text-brown font-semibold py-3 px-8 rounded-lg btn-hover transition-colors"
           >
             {ctaText}

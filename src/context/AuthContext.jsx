@@ -1,46 +1,52 @@
+'use client'
+
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
 const AuthContext = createContext(null)
 
 const LOCAL_KEY = 'veeandcee_auth'
-
-// simple mock API using localStorage
-const mockApi = {
-  register: async ({ name, email, password }) => {
-    const users = JSON.parse(localStorage.getItem('vee_users') || '[]')
-    if (users.find((u) => u.email === email)) {
-      throw new Error('User already exists')
-    }
-    const user = { id: Date.now(), name, email }
-    users.push({ ...user, password })
-    localStorage.setItem('vee_users', JSON.stringify(users))
-    return user
-  },
-  login: async ({ email, password }) => {
-    const users = JSON.parse(localStorage.getItem('vee_users') || '[]')
-    const found = users.find((u) => u.email === email && u.password === password)
-    if (!found) throw new Error('Invalid credentials')
-    const { password: _p, ...user } = found
-    return user
-  }
-}
+const TOKEN_KEY = 'veeandcee_token'
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => JSON.parse(localStorage.getItem(LOCAL_KEY) || 'null'))
-  const [loading, setLoading] = useState(false)
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    localStorage.setItem(LOCAL_KEY, JSON.stringify(user))
-  }, [user])
+    try {
+      const savedUser = localStorage.getItem(LOCAL_KEY)
+      if (savedUser) {
+        setUser(JSON.parse(savedUser))
+      }
+    } catch (e) {
+      console.error('Failed to load auth state from localStorage:', e)
+    } finally {
+      setLoading(false)
+    }
+  }, [])
 
-  const register = async ({ name, email, password }) => {
+  const persistUser = (nextUser) => {
+    setUser(nextUser)
+    localStorage.setItem(LOCAL_KEY, JSON.stringify(nextUser))
+  }
+
+  const register = async ({ name, email, password, profileImage }) => {
     setLoading(true)
     setError(null)
     try {
-      const newUser = await mockApi.register({ name, email, password })
-      setUser(newUser)
-      return newUser
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password, profileImage }),
+      })
+      const data = await response.json()
+      if (!response.ok) {
+        throw new Error(data.error || 'Registration failed')
+      }
+
+      persistUser(data.user)
+      localStorage.setItem(TOKEN_KEY, data.token)
+      return data.user
     } catch (err) {
       setError(err.message)
       throw err
@@ -53,9 +59,19 @@ export function AuthProvider({ children }) {
     setLoading(true)
     setError(null)
     try {
-      const logged = await mockApi.login({ email, password })
-      setUser(logged)
-      return logged
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      })
+      const data = await response.json()
+      if (!response.ok) {
+        throw new Error(data.error || 'Login failed')
+      }
+
+      persistUser(data.user)
+      localStorage.setItem(TOKEN_KEY, data.token)
+      return data.user
     } catch (err) {
       setError(err.message)
       throw err
@@ -66,10 +82,16 @@ export function AuthProvider({ children }) {
 
   const logout = () => {
     setUser(null)
+    localStorage.removeItem(LOCAL_KEY)
+    localStorage.removeItem(TOKEN_KEY)
+  }
+
+  const updateUser = (nextUser) => {
+    persistUser(nextUser)
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, error, register, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, error, register, login, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   )

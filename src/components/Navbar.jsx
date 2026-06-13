@@ -1,5 +1,8 @@
+'use client'
+
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Menu, X, Search, Heart, ShoppingBag, User, ChevronDown } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
@@ -12,7 +15,7 @@ export default function Navbar() {
   const [searchTerm, setSearchTerm] = useState('')
   const { user, logout } = useAuth()
   const { cartCount, cartPulse } = useCart()
-  const navigate = useNavigate()
+  const router = useRouter()
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
   const toggleAccountMenu = () => setIsAccountOpen((open) => !open)
@@ -24,7 +27,7 @@ export default function Navbar() {
   const handleSearchSubmit = (event) => {
     event.preventDefault()
     if (!searchTerm.trim()) return
-    navigate(`/search?q=${encodeURIComponent(searchTerm.trim())}`)
+    router.push(`/search?q=${encodeURIComponent(searchTerm.trim())}`)
     setSearchTerm('')
     setIsSearchOpen(false)
     setIsMenuOpen(false)
@@ -43,7 +46,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <Link to="/" className="flex-shrink-0">
+          <Link href="/" className="flex-shrink-0">
             <span className="text-2xl font-serif font-bold text-brown">VeeandCee</span>
           </Link>
 
@@ -52,7 +55,7 @@ export default function Navbar() {
             {menuItems.map((item) => (
               <Link
                 key={item.label}
-                to={item.href}
+                href={item.href}
                 className="text-sm font-medium text-charcoal hover:text-brown transition-colors"
               >
                 {item.label}
@@ -70,14 +73,14 @@ export default function Navbar() {
               <Search size={20} className="text-charcoal" />
             </button>
             <button
-              onClick={() => navigate('/wishlist')}
+              onClick={() => router.push('/wishlist')}
               className="p-2 hover:bg-brown/5 rounded-lg transition-colors"
               aria-label="Wishlist"
             >
               <Heart size={20} className="text-charcoal" />
             </button>
-            {import.meta.env.DEV && (
-              <Link to="/admin" className="p-2 text-[10px] font-bold text-rose border border-rose/20 rounded-lg hover:bg-rose/5 transition-colors">
+            {process.env.NODE_ENV === 'development' && (
+              <Link href="/admin" className="p-2 text-[10px] font-bold text-rose border border-rose/20 rounded-lg hover:bg-rose/5 transition-colors">
                 DEV: ADMIN
               </Link>
             )}
@@ -88,27 +91,35 @@ export default function Navbar() {
                   className="flex items-center gap-2 p-2 hover:bg-brown/5 rounded-lg transition-colors"
                   aria-label="Account menu"
                 >
-                  <User size={20} className="text-charcoal" />
+                  {user.profileImage ? (
+                    <img
+                      src={user.profileImage}
+                      alt={user.name}
+                      className="h-7 w-7 rounded-full object-cover"
+                    />
+                  ) : (
+                    <User size={20} className="text-charcoal" />
+                  )}
                   <ChevronDown size={16} className="text-charcoal" />
                 </button>
                 {isAccountOpen && (
                   <div className="absolute right-0 mt-2 w-52 rounded-3xl border border-brown/10 bg-white shadow-xl overflow-hidden">
                     <Link
-                      to="/account"
+                      href="/account"
                       onClick={() => setIsAccountOpen(false)}
                       className="block px-4 py-3 text-sm text-charcoal hover:bg-cream transition-colors"
                     >
                       My Account
                     </Link>
                     <Link
-                      to="/account#settings"
+                      href="/account#settings"
                       onClick={() => setIsAccountOpen(false)}
                       className="block px-4 py-3 text-sm text-charcoal hover:bg-cream transition-colors"
                     >
                       Account Settings
                     </Link>
                     <Link
-                      to="/wishlist"
+                      href="/wishlist"
                       onClick={() => setIsAccountOpen(false)}
                       className="block px-4 py-3 text-sm text-charcoal hover:bg-cream transition-colors"
                     >
@@ -125,11 +136,11 @@ export default function Navbar() {
               </div>
             ) : (
               <div className="flex items-center gap-3">
-                <Link to="/login" className="text-sm text-charcoal hover:text-brown">Sign in</Link>
-                <Link to="/signup" className="text-sm text-brown font-medium">Create account</Link>
+                <Link href="/login" className="text-sm text-charcoal hover:text-brown">Sign in</Link>
+                <Link href="/signup" className="text-sm text-brown font-medium">Create account</Link>
               </div>
             )}
-            <Link to="/cart" className="p-2 hover:bg-brown/5 rounded-lg transition-colors relative" aria-label="Cart">
+            <Link href="/cart" className="p-2 hover:bg-brown/5 rounded-lg transition-colors relative" aria-label="Cart">
               <ShoppingBag size={20} className="text-charcoal" />
               <AnimatePresence>
                 {cartCount > 0 && (
@@ -219,7 +230,7 @@ export default function Navbar() {
             {menuItems.map((item) => (
               <Link
                 key={item.label}
-                to={item.href}
+                href={item.href}
                 className="block px-4 py-2 text-sm font-medium text-charcoal hover:bg-brown/5 rounded-lg transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
@@ -229,14 +240,14 @@ export default function Navbar() {
             <div className="px-4 py-2 border-t mt-2">
               {user ? (
                 <div className="space-y-2">
-                  <Link to="/account" className="block text-charcoal">Account</Link>
-                  <Link to="/account#settings" className="block text-charcoal">Account Settings</Link>
+                  <Link href="/account" className="block text-charcoal">Account</Link>
+                  <Link href="/account#settings" className="block text-charcoal">Account Settings</Link>
                   <button onClick={() => { logout(); setIsMenuOpen(false) }} className="block text-left text-charcoal">Log out</button>
                 </div>
               ) : (
                 <div className="space-y-2">
-                  <Link to="/login" className="block text-charcoal">Sign in</Link>
-                  <Link to="/signup" className="block text-brown font-medium">Create account</Link>
+                  <Link href="/login" className="block text-charcoal">Sign in</Link>
+                  <Link href="/signup" className="block text-brown font-medium">Create account</Link>
                 </div>
               )}
             </div>

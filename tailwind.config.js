@@ -1,7 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    "./index.html",
     "./src/**/*.{js,jsx}",
   ],
   theme: {
@@ -15,8 +14,8 @@ export default {
         'charcoal': '#4A4A4A',
       },
       fontFamily: {
-        serif: ['Playfair Display', 'serif'],
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        serif: ['var(--font-serif)', 'serif'],
+        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
       },
       spacing: {
         '128': '32rem',
