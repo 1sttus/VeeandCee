@@ -1,0 +1,11 @@
+- [ ] Add sticky glass‑morphed mobile navigation component
+- [ ] Integrate sticky nav into layout for mobile view
+- [ ] Create Hero model and admin hero edit page with Cloudinary upload
+- [ ] Update layout to fetch hero data and pass to HeroSection
+- [ ] Convert desktop search bar to modal popup component
+- [ ] Implement cart added toast with plus‑sign animation (mobile)
+- [ ] Add click‑outside auto‑dismiss for mobile dropdowns and search modal
+- [ ] Add Zoho XMTP email helper (already created) and integrate into auth, order, and product APIs
+- [ ] Add required env vars to .env.example and .env.local
+- [ ] Run clear‑products endpoint to remove seeded data
+- [ ] Verify build and run manual UI tests
