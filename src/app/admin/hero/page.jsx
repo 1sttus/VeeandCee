@@ -6,8 +6,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { uploadImage } from '@/lib/cloudinary';
-import Hero from '@/models/Hero';
-import dbConnect from '@/lib/db';
 
 export default function HeroAdmin() {
   const [title, setTitle] = useState('');
@@ -18,17 +16,19 @@ export default function HeroAdmin() {
   const [previewUrl, setPreviewUrl] = useState('');
   const router = useRouter();
 
-  // Load existing hero on mount
+  // Load existing hero via API
   useEffect(() => {
     async function loadHero() {
-      await dbConnect();
-      const hero = await Hero.findOne();
-      if (hero) {
-        setTitle(hero.title || '');
-        setSubtitle(hero.subtitle || '');
-        setCtaText(hero.ctaText || 'Shop Now');
-        setCtaLink(hero.ctaLink || '/shop/skincare');
-        setPreviewUrl(hero.imageUrl || '');
+      const res = await fetch('/api/admin/hero');
+      if (res.ok) {
+        const hero = await res.json();
+        if (hero) {
+          setTitle(hero.title || '');
+          setSubtitle(hero.subtitle || '');
+          setCtaText(hero.ctaText || 'Shop Now');
+          setCtaLink(hero.ctaLink || '/shop/skincare');
+          setPreviewUrl(hero.imageUrl || '');
+        }
       }
     }
     loadHero();
@@ -49,12 +49,12 @@ export default function HeroAdmin() {
       const result = await uploadImage(imageFile, { folder: 'hero' });
       imageUrl = result.secure_url;
     }
-    await dbConnect();
-    await Hero.findOneAndUpdate(
-      {},
-      { title, subtitle, ctaText, ctaLink, imageUrl },
-      { upsert: true, new: true }
-    );
+    const payload = { title, subtitle, ctaText, ctaLink, imageUrl };
+    await fetch('/api/admin/hero', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
     alert('Hero updated');
     router.refresh();
   };
