@@ -132,11 +132,10 @@ export default function Home() {
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
-              className={`px-6 py-2 rounded-full font-medium text-sm whitespace-nowrap transition-colors ${
-                selectedCategory === cat.id
+              className={`px-6 py-2 rounded-full font-medium text-sm whitespace-nowrap transition-colors ${selectedCategory === cat.id
                   ? 'bg-brown text-white'
                   : 'bg-white text-brown border border-brown/20 hover:border-brown'
-              }`}
+                }`}
             >
               {cat.label}
             </button>

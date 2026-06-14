@@ -4,32 +4,40 @@ import { useEffect, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
+// 1. Import your local images from your src/img folder
+// (Adjust the '../' relative paths depending on how deep this file sits inside src)
+import slide1 from '../img/hero_1.png'
+import slide2 from '../img/hero_2.png'
+import slide3 from '../img/hero_3.png'
+
 const defaultSlides = [
   {
     title: 'The Art of Complexion',
     subtitle: 'Discover elevated essentials designed for luminous, natural beauty in every ritual.',
-    image: 'https://images.unsplash.com/photo-1559599101-f09722fb4948?auto=format&fit=crop&w=1600&q=80',
+    image: slide1, // 2. Pass the imported image object directly here
   },
   {
     title: 'Rituals That Glow',
     subtitle: 'Layer botanical skincare and soft-focus color for a calm, polished finish.',
-    image: 'https://images.unsplash.com/photo-1596462502278-27bfdc4033c8?auto=format&fit=crop&w=1600&q=80',
+    image: slide2,
   },
   {
     title: 'Clean Beauty, Made Sensory',
     subtitle: 'Build your everyday edit with refined formulas for skin, body, and mood.',
-    image: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=1600&q=80',
+    image: slide3,
   },
 ]
 
-export default function HeroSection({ 
-  title, 
-  subtitle, 
-  backgroundImage, 
+// ... rest of your component code
+
+export default function HeroSection({
+  title,
+  subtitle,
+  backgroundImage,
   slides = defaultSlides,
-  ctaText = 'Shop Now', 
+  ctaText = 'Shop Now',
   ctaLink = '/shop/skincare',
-  layout = 'center' 
+  layout = 'center'
 }) {
   const resolvedSlides = slides?.length
     ? slides
@@ -53,9 +61,8 @@ export default function HeroSection({
       {resolvedSlides.map((slide, index) => (
         <div
           key={`${slide.title}-${slide.image}`}
-          className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-out ${
-            index === activeSlide ? 'opacity-100' : 'opacity-0'
-          }`}
+          className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-out ${index === activeSlide ? 'opacity-100' : 'opacity-0'
+            }`}
           style={{ backgroundImage: `url(${slide.image || slide.backgroundImage})` }}
           aria-hidden={index !== activeSlide}
         />
@@ -89,9 +96,8 @@ export default function HeroSection({
             key={slide.title}
             type="button"
             onClick={() => setActiveSlide(index)}
-            className={`h-2.5 rounded-full transition-all ${
-              index === activeSlide ? 'w-8 bg-gold' : 'w-2.5 bg-white/70 hover:bg-white'
-            }`}
+            className={`h-2.5 rounded-full transition-all ${index === activeSlide ? 'w-8 bg-gold' : 'w-2.5 bg-white/70 hover:bg-white'
+              }`}
             aria-label={`Show slide ${index + 1}`}
           />
         ))}
