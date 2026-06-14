@@ -4,26 +4,21 @@ import { useEffect, useState } from 'react'
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
-// 1. Import local images from your src/img folder
-import slide1 from '../img/hero_1.png'
-import slide2 from '../img/hero_2.png'
-import slide3 from '../img/hero_3.png'
-
 const defaultSlides = [
   {
     title: 'The Art of Complexion',
     subtitle: 'Discover elevated essentials designed for luminous, natural beauty in every ritual.',
-    image: slide1,
+    image: 'https://images.unsplash.com/photo-1559599101-f09722fb4948?auto=format&fit=crop&w=1600&q=80',
   },
   {
     title: 'Rituals That Glow',
     subtitle: 'Layer botanical skincare and soft-focus color for a calm, polished finish.',
-    image: slide2,
+    image: 'https://images.unsplash.com/photo-1596462502278-27bfdc4033c8?auto=format&fit=crop&w=1600&q=80',
   },
   {
     title: 'Clean Beauty, Made Sensory',
     subtitle: 'Build your everyday edit with refined formulas for skin, body, and mood.',
-    image: slide3,
+    image: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=1600&q=80',
   },
 ]
 
@@ -39,7 +34,6 @@ export default function HeroSection({
   const resolvedSlides = slides?.length
     ? slides
     : [{ title, subtitle, image: backgroundImage }]
-
   const [activeSlide, setActiveSlide] = useState(0)
 
   useEffect(() => {
@@ -56,23 +50,18 @@ export default function HeroSection({
 
   return (
     <section className="relative w-full h-[400px] sm:h-[500px] md:h-[600px] flex items-center justify-center overflow-hidden">
-      {resolvedSlides.map((slide, index) => {
-        // Safe resolution for Next.js image objects vs plain text URL strings
-        const bgImageUrl = slide.image?.src || slide.image || slide.backgroundImage;
-
-        return (
-          <div
-            key={`slide-${index}`}
-            className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-out ${index === activeSlide ? 'opacity-100' : 'opacity-0'
-              }`}
-            style={{ backgroundImage: bgImageUrl ? `url(${bgImageUrl})` : 'none' }}
-            aria-hidden={index !== activeSlide}
-          />
-        )
-      })}
+      {resolvedSlides.map((slide, index) => (
+        <div
+          key={`${slide.title}-${slide.image}`}
+          className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-out ${index === activeSlide ? 'opacity-100' : 'opacity-0'
+            }`}
+          style={{ backgroundImage: `url(${slide.image || slide.backgroundImage})` }}
+          aria-hidden={index !== activeSlide}
+        />
+      ))}
 
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black/20" />
+      <div className="absolute inset-0 bg-black/20"></div>
 
       {/* Content */}
       <div className={`relative z-10 text-center px-4 sm:px-6 ${layout === 'right' ? 'text-right' : ''}`}>
@@ -93,11 +82,10 @@ export default function HeroSection({
         </div>
       </div>
 
-      {/* Slide Indicators */}
       <div className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 gap-2">
-        {resolvedSlides.map((_, index) => (
+        {resolvedSlides.map((slide, index) => (
           <button
-            key={`dot-${index}`}
+            key={slide.title}
             type="button"
             onClick={() => setActiveSlide(index)}
             className={`h-2.5 rounded-full transition-all ${index === activeSlide ? 'w-8 bg-gold' : 'w-2.5 bg-white/70 hover:bg-white'
