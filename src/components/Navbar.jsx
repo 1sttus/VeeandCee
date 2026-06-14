@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Menu, X, Search, Heart, ShoppingBag, User, ChevronDown } from 'lucide-react'
@@ -16,6 +16,13 @@ export default function Navbar() {
   const { user, logout } = useAuth()
   const { cartCount, cartPulse } = useCart()
   const router = useRouter()
+  const accountMenuRef = useRef(null)
+  const mobileMenuRef = useRef(null)
+  const mobileMenuButtonRef = useRef(null)
+  const desktopSearchRef = useRef(null)
+  const mobileSearchRef = useRef(null)
+  const searchButtonRef = useRef(null)
+  const profileImage = user?.profileImage
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
   const toggleAccountMenu = () => setIsAccountOpen((open) => !open)
@@ -23,6 +30,47 @@ export default function Navbar() {
     setIsSearchOpen(true)
     setIsMenuOpen(false)
   }
+
+  useEffect(() => {
+    const handlePointerDown = (event) => {
+      if (isAccountOpen && accountMenuRef.current && !accountMenuRef.current.contains(event.target)) {
+        setIsAccountOpen(false)
+      }
+
+      if (
+        isMenuOpen &&
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target) &&
+        !mobileMenuButtonRef.current?.contains(event.target)
+      ) {
+        setIsMenuOpen(false)
+      }
+
+      const clickedInsideSearch =
+        desktopSearchRef.current?.contains(event.target) ||
+        mobileSearchRef.current?.contains(event.target) ||
+        searchButtonRef.current?.contains(event.target)
+
+      if (isSearchOpen && !clickedInsideSearch) {
+        setIsSearchOpen(false)
+      }
+    }
+
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') {
+        setIsAccountOpen(false)
+        setIsMenuOpen(false)
+        setIsSearchOpen(false)
+      }
+    }
+
+    document.addEventListener('pointerdown', handlePointerDown)
+    document.addEventListener('keydown', handleEscape)
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown)
+      document.removeEventListener('keydown', handleEscape)
+    }
+  }, [isAccountOpen, isMenuOpen, isSearchOpen])
 
   const handleSearchSubmit = (event) => {
     event.preventDefault()
@@ -42,7 +90,7 @@ export default function Navbar() {
   ]
 
   return (
-    <nav className="sticky top-0 z-50 bg-cream border-b border-brown/10">
+    <nav className="sticky top-0 z-50 bg-cream/95 border-b border-brown/10 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
@@ -66,6 +114,7 @@ export default function Navbar() {
           {/* Desktop Icons */}
           <div className="hidden md:flex items-center gap-6">
             <button
+              ref={searchButtonRef}
               onClick={() => setIsSearchOpen((open) => !open)}
               className="p-2 hover:bg-brown/5 rounded-lg transition-colors"
               aria-label="Search"
@@ -85,16 +134,16 @@ export default function Navbar() {
               </Link>
             )}
             {user ? (
-              <div className="relative">
+              <div ref={accountMenuRef} className="relative">
                 <button
                   onClick={toggleAccountMenu}
                   className="flex items-center gap-2 p-2 hover:bg-brown/5 rounded-lg transition-colors"
                   aria-label="Account menu"
                 >
-                  {user.profileImage ? (
+                  {profileImage ? (
                     <img
-                      src={user.profileImage}
-                      alt={user.name}
+                      src={profileImage}
+                      alt={user.name || 'Profile'}
                       className="h-7 w-7 rounded-full object-cover"
                     />
                   ) : (
@@ -109,7 +158,7 @@ export default function Navbar() {
                       onClick={() => setIsAccountOpen(false)}
                       className="block px-4 py-3 text-sm text-charcoal hover:bg-cream transition-colors"
                     >
-                      My Account
+                      Profile
                     </Link>
                     <Link
                       href="/account#settings"
@@ -167,6 +216,7 @@ export default function Navbar() {
               <Search size={24} className="text-charcoal" />
             </button>
             <button
+              ref={mobileMenuButtonRef}
               onClick={toggleMenu}
               className="p-2 hover:bg-brown/5 rounded-lg transition-colors"
               aria-label="Toggle menu"
@@ -177,7 +227,7 @@ export default function Navbar() {
         </div>
 
         {isSearchOpen && (
-          <form onSubmit={handleSearchSubmit} className="hidden md:flex items-center justify-end mt-4 space-x-3">
+          <form ref={desktopSearchRef} onSubmit={handleSearchSubmit} className="hidden md:flex items-center justify-end mt-4 space-x-3">
             <input
               value={searchTerm}
               onChange={(event) => setSearchTerm(event.target.value)}
@@ -195,7 +245,7 @@ export default function Navbar() {
 
         {isSearchOpen && (
           <div className="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/40 md:hidden">
-            <div className="w-full max-w-md rounded-[2rem] bg-white p-6 shadow-2xl">
+            <div ref={mobileSearchRef} className="w-full max-w-md rounded-[2rem] bg-white p-6 shadow-2xl">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold text-brown">Search</h2>
                 <button
@@ -226,7 +276,7 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden pb-4 space-y-2 animate-fadeIn">
+          <div ref={mobileMenuRef} className="md:hidden pb-4 space-y-2 animate-fadeIn">
             {menuItems.map((item) => (
               <Link
                 key={item.label}
@@ -240,14 +290,29 @@ export default function Navbar() {
             <div className="px-4 py-2 border-t mt-2">
               {user ? (
                 <div className="space-y-2">
-                  <Link href="/account" className="block text-charcoal">Account</Link>
-                  <Link href="/account#settings" className="block text-charcoal">Account Settings</Link>
+                  <Link href="/account" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-2 text-charcoal">
+                    {profileImage ? (
+                      <img
+                        src={profileImage}
+                        alt={user.name || 'Profile'}
+                        className="h-7 w-7 rounded-full object-cover"
+                      />
+                    ) : (
+                      <User size={18} className="text-charcoal" />
+                    )}
+                    Profile
+                  </Link>
+                  <Link href="/account#settings" onClick={() => setIsMenuOpen(false)} className="block text-charcoal">Account Settings</Link>
                   <button onClick={() => { logout(); setIsMenuOpen(false) }} className="block text-left text-charcoal">Log out</button>
                 </div>
               ) : (
                 <div className="space-y-2">
-                  <Link href="/login" className="block text-charcoal">Sign in</Link>
-                  <Link href="/signup" className="block text-brown font-medium">Create account</Link>
+                  <Link href="/login" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-2 text-charcoal">
+                    <User size={18} className="text-charcoal" />
+                    Profile
+                  </Link>
+                  <Link href="/login" onClick={() => setIsMenuOpen(false)} className="block text-charcoal">Sign in</Link>
+                  <Link href="/signup" onClick={() => setIsMenuOpen(false)} className="block text-brown font-medium">Create account</Link>
                 </div>
               )}
             </div>

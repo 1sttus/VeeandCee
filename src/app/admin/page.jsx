@@ -41,6 +41,7 @@ const emptyProductForm = {
 }
 
 const formatCurrency = (value = 0) => `$${Number(value).toFixed(2)}`
+const getProductId = (product) => product?.id || product?._id
 const toTitle = (value = '') =>
   value
     .split('-')
@@ -245,7 +246,7 @@ export default function AdminPage() {
     try {
       const payload = normalizeProductPayload(formData)
       const savedProduct = editingProduct
-        ? await authedFetch(`/api/products/${editingProduct.id}`, {
+        ? await authedFetch(`/api/products/${getProductId(editingProduct)}`, {
             method: 'PUT',
             body: JSON.stringify(payload),
           })
@@ -256,7 +257,7 @@ export default function AdminPage() {
 
       setProducts((current) =>
         editingProduct
-          ? current.map((item) => (item.id === savedProduct.id ? savedProduct : item))
+          ? current.map((item) => (getProductId(item) === getProductId(savedProduct) ? savedProduct : item))
           : [savedProduct, ...current]
       )
       closeModal()
@@ -269,15 +270,15 @@ export default function AdminPage() {
 
   const deleteProduct = async (productId) => {
     await authedFetch(`/api/products/${productId}`, { method: 'DELETE' })
-    setProducts((current) => current.filter((item) => item.id !== productId))
+    setProducts((current) => current.filter((item) => getProductId(item) !== productId))
   }
 
   const updateProduct = async (product, patch) => {
-    const updated = await authedFetch(`/api/products/${product.id}`, {
+    const updated = await authedFetch(`/api/products/${getProductId(product)}`, {
       method: 'PUT',
       body: JSON.stringify({ ...product, ...patch }),
     })
-    setProducts((current) => current.map((item) => (item.id === updated.id ? updated : item)))
+    setProducts((current) => current.map((item) => (getProductId(item) === getProductId(updated) ? updated : item)))
   }
 
   const updateOrderStatus = async (orderId, status) => {
@@ -486,7 +487,7 @@ export default function AdminPage() {
               </thead>
               <tbody className="divide-y divide-brown/10 bg-white/80">
                 {paginatedProducts.map((product) => (
-                  <tr key={product.id} className="transition hover:bg-cream/70">
+                  <tr key={getProductId(product)} className="transition hover:bg-cream/70">
                     <td className="px-6 py-4">
                       <div className="max-w-xs truncate font-semibold text-brown">{product.name}</div>
                       <div className="max-w-sm truncate text-xs text-charcoal/60">{product.description}</div>
@@ -513,7 +514,7 @@ export default function AdminPage() {
                         <button onClick={() => updateProduct(product, { visible: !product.visible })} className="rounded-full border border-brown/10 bg-cream px-3 py-2 text-xs text-charcoal transition hover:bg-brown/5">
                           {product.visible ? 'Hide' : 'Show'}
                         </button>
-                        <button onClick={() => deleteProduct(product.id)} className="inline-flex items-center gap-1 rounded-full border border-rose/30 bg-rose/10 px-3 py-2 text-xs text-rose transition hover:bg-rose/20">
+                        <button onClick={() => deleteProduct(getProductId(product))} className="inline-flex items-center gap-1 rounded-full border border-rose/30 bg-rose/10 px-3 py-2 text-xs text-rose transition hover:bg-rose/20">
                           <Trash2 size={14} /> Delete
                         </button>
                       </div>

@@ -6,6 +6,7 @@ import Link from 'next/link'
 import HeroSection from '@/components/HeroSection'
 import ProductCard from '@/components/ProductCard'
 import TestimonialCard from '@/components/TestimonialCard'
+import FloatingAssistant from '@/components/FloatingAssistant'
 
 export default function Home() {
   const [products, setProducts] = useState([])
@@ -80,11 +81,10 @@ export default function Home() {
 
   return (
     <div className="pb-24 md:pb-0">
+      <FloatingAssistant />
+
       {/* Hero Section */}
       <HeroSection
-        title="The Art of Complexion"
-        subtitle="Discover elevated essentials designed for luminous, natural beauty in every ritual."
-        backgroundImage="https://images.unsplash.com/photo-1559599101-f09722fb4948?auto=format&fit=crop&w=1600&q=80"
         ctaText="Explore Now"
         ctaLink="/shop/skincare"
       />

@@ -2,9 +2,6 @@
 import { Inter, Playfair_Display } from 'next/font/google';
 import LayoutClient from './layout-client';
 import '../index.css';
-import HeroSection from '@/components/HeroSection';
-import StickyNav from '@/components/StickyNav';
-import Hero from '@/models/Hero'; // server-side model
 
 const inter = Inter({
   subsets: ['latin'],
@@ -30,39 +27,12 @@ export const metadata = {
   keywords: 'cosmetics, skincare, beauty, serums, moisturizers, cleansers',
 };
 
-export default async function RootLayout({ children }) {
-  // Fetch hero data server-side
-  let hero = null;
-  try {
-    hero = await Hero.findOne();
-  } catch (e) {
-    console.warn('Hero fetch error', e);
-  }
-
-  const heroProps = hero
-    ? {
-        title: hero.title,
-        subtitle: hero.subtitle,
-        backgroundImage: hero.imageUrl,
-        ctaText: hero.ctaText,
-        ctaLink: hero.ctaLink,
-      }
-    : {
-        title: 'Welcome to VeeandCee',
-        subtitle: 'Premium Skincare & Cosmetics',
-        backgroundImage: '/default-hero.jpg',
-        ctaText: 'Shop Now',
-        ctaLink: '/shop/skincare',
-      };
-
+export default function RootLayout({ children }) {
+  // No hero section rendered as per request
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <body className="font-sans antialiased text-charcoal">
-        <StickyNav />
-        <LayoutClient>
-          <HeroSection {...heroProps} />
-          {children}
-        </LayoutClient>
+        <LayoutClient>{children}</LayoutClient>
       </body>
     </html>
   );

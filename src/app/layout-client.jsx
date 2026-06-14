@@ -3,7 +3,6 @@
 import { usePathname } from 'next/navigation'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
-import FloatingAssistant from '@/components/FloatingAssistant'
 import MobileNav from '@/context/MobileNav'
 import { AuthProvider } from '@/context/AuthContext'
 import { CartProvider } from '@/context/CartContext'
@@ -21,7 +20,6 @@ export default function LayoutClient({ children }) {
           <OrderProvider>
             <div className="flex flex-col min-h-screen bg-cream overflow-x-hidden">
               {!isAdminRoute && <Navbar />}
-              {!isAdminRoute && <FloatingAssistant />}
               <main className={isAdminRoute ? '' : 'flex-grow'}>{children}</main>
               {!isAdminRoute && <Footer />}
               {!isAdminRoute && <MobileNav />}

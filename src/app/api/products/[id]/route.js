@@ -2,13 +2,24 @@ import { NextResponse } from 'next/server'
 import dbConnect from '@/lib/db'
 import Product from '@/models/Product'
 import { verifyToken } from '@/lib/auth'
+import mongoose from 'mongoose'
+
+const getRouteId = async (params) => {
+  const resolvedParams = await params
+  return resolvedParams?.id
+}
+
+const findProductByRouteId = (id) => {
+  if (!id || !mongoose.Types.ObjectId.isValid(id)) return null
+  return Product.findById(id)
+}
 
 export async function GET(req, { params }) {
   try {
     await dbConnect()
-    const { id } = params
+    const id = await getRouteId(params)
 
-    const product = await Product.findById(id)
+    const product = await findProductByRouteId(id)
     if (!product) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 })
     }
@@ -29,7 +40,7 @@ export async function GET(req, { params }) {
 export async function PUT(req, { params }) {
   try {
     await dbConnect()
-    const { id } = params
+    const id = await getRouteId(params)
 
     const user = verifyToken(req)
     if (!user || !user.isAdmin) {
@@ -43,10 +54,12 @@ export async function PUT(req, { params }) {
       body.category = body.category.toLowerCase()
     }
 
-    const product = await Product.findByIdAndUpdate(id, body, {
-      new: true,
-      runValidators: true,
-    })
+    const product = id && mongoose.Types.ObjectId.isValid(id)
+      ? await Product.findByIdAndUpdate(id, body, {
+          new: true,
+          runValidators: true,
+        })
+      : null
 
     if (!product) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 })
@@ -68,14 +81,16 @@ export async function PUT(req, { params }) {
 export async function DELETE(req, { params }) {
   try {
     await dbConnect()
-    const { id } = params
+    const id = await getRouteId(params)
 
     const user = verifyToken(req)
     if (!user || !user.isAdmin) {
       return NextResponse.json({ error: 'Unauthorized administrative access' }, { status: 403 })
     }
 
-    const product = await Product.findByIdAndDelete(id)
+    const product = id && mongoose.Types.ObjectId.isValid(id)
+      ? await Product.findByIdAndDelete(id)
+      : null
     if (!product) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 })
     }
